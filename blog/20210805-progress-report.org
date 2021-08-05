@@ -9,19 +9,20 @@
 
 Welcome to the first progress report for the "PAEIoT Sensor One" project.
 
-file:../images/20210803_162958_resized.jpg 
+[[file:../images/20210803_162958_resized.jpg]]
 [[file:../images/20210803_163039_resized.jpg]]
+[[file:../images/20210805_121239_resized.jpg]]
 
 ** Progress
 We have:
 - Connected the Arduino MKRWAN1510 board to two DHT22 (AM2302) Temperature and
   Humidity sensors;
-- Run the example LoRaWAN on the MKRWAN1510 (from the LORAWAN Arduino Library).
-- Modified and written an Arduino sketch which reads the Temperature and Humidity Sensors and transmits them to an MQTT application via The Things Stack.
+- Run the example LoRaWAN on the MKRWAN1510 (from the LORAWAN Arduino Library);
+- Modified and written an Arduino sketch which reads the Temperature and Humidity Sensors and transmits them to an MQTT application via The Things Stack, *every 2 minutes*;
 - Modified exiting *NodeRED* configuration to interpret data and save into
   *InfluxDB* database, which is then plotted with *Grafana* dashboard. (These
-  services were already existing resources.) Data collected every 2 minutes.
-- Tested prototype, with battery and solar power charging. Ran for several days, reliably collecting data.
+  services were already existing resources.); and
+- Tested prototype, with battery and solar power charging. It ran for several days, reliably collecting data.
 
 ** Outstanding Issues
 The following issues and problems need to be addressed.
