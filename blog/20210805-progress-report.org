@@ -1,3 +1,5 @@
+[[../README.org][Top]] | [[index.org][Index]]
+-----
 * Progress Report - Thursday, 5 August 2021                               :TOC:
   - [[#introduction][Introduction]]
   - [[#progress][Progress]]
