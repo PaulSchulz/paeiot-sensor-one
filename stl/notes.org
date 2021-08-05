@@ -1,0 +1,29 @@
+* stl files                                                               :TOC:
+  - [[#introduction][Introduction]]
+  - [[#paeiot-sensor-one-baseplate][paeiot-sensor-one-baseplate]]
+
+** Introduction
+The file here are the sources required for 3D printed pieces.
+
+These parts have been created using TinkerCAD, and exported in both OBJ as well
+as STL file formats.
+
+If required, the original designs can be made available for colabouration in
+TinkerCAD. (At some stage the designs will be redone on a more open platform.)
+
+** paeiot-sensor-one-baseplate
+Baseplate design for mounting MKRWAN1310 board in enclosure.
+
+Statis: Work-in-progress
+
+Size/Shape
+- Thickness: 3mm
+- Width: 100mm
+- Height: 70mm
+- Corner cut-outs: 13mm radius
+- Battery Slot: 52mm x 6mm
+
+MKRWAN1310 Board
+- Mounting Holes: 2.5mm
+- Spacing width: 20.5mm
+- Spacing length: 57mm
