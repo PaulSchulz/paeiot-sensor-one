@@ -1,6 +1,51 @@
-* Progress Report - Thursday, 5 August 2021
+* Progress Report - Thursday, 5 August 2021                               :TOC:
+  - [[#introduction][Introduction]]
+  - [[#progress][Progress]]
+  - [[#outstanding-issues][Outstanding Issues]]
+  - [[#what-to-do-next][What to do next]]
+  - [[#what-else-to-do][What else to do...]]
+
+** Introduction
+
 Welcome to the first progress report for the "PAEIoT Sensor One" project.
 
-#+attr_html: :width 300 px
-[[file:../images/20210803_163039.jpg]]
+file:../images/20210803_162958_resized.jpg 
+[[file:../images/20210803_163039_resized.jpg]]
 
+** Progress
+We have:
+- Connected the Arduino MKRWAN1510 board to two DHT22 (AM2302) Temperature and
+  Humidity sensors;
+- Run the example LoRaWAN on the MKRWAN1510 (from the LORAWAN Arduino Library).
+- Modified and written an Arduino sketch which reads the Temperature and Humidity Sensors and transmits them to an MQTT application via The Things Stack.
+- Modified exiting *NodeRED* configuration to interpret data and save into
+  *InfluxDB* database, which is then plotted with *Grafana* dashboard. (These
+  services were already existing resources.) Data collected every 2 minutes.
+- Tested prototype, with battery and solar power charging. Ran for several days, reliably collecting data.
+
+** Outstanding Issues
+The following issues and problems need to be addressed.
+
+***  Initial login and authentication with the LoRaWAN network
+The LoRa radio does not authenticate with the LoRaWAN network reliably first
+time (via OTAA). It will connect after several restarts/resets/power cycles.
+Once connected, transmission and reception of data is 
+
+** What to do next
+- Make enquiries about LoRaWAN authentication issue.
+- Extend cable on temperature sensor to support inside/outside measurements.
+- Investigate enclosure options.
+- Document wiring (wiring diagram).
+- Add status LED.
+  - Flash status when starting up.
+  - Flash Status when connecting/connected to LoRaWAN
+  - Flash status LED when transmitting.
+- Create Github repository for "Sensor One" project
+
+** What else to do...
+*** Power budget calculations
+- We need to work out how much power is being drawn from battery, and how much power we can get from solar panel.
+- For how many 'cloudy' days can we remain powered and operating?
+
+*** Radio Budget
+- For how long is the LoRa radio transmitting?
