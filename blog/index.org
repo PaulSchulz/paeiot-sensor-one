@@ -1,0 +1,5 @@
+* Blog Articles :TOC:
+  - [[#progress-reports][Progress Reports]]
+
+** Progress Reports
+- [[20210805-progress-report.org]]
