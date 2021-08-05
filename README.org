@@ -17,6 +17,10 @@ environmental sensing.
 
 The initial discussion paper (RFC) can be found here: [[https://github.com/PaulSchulz/paeiot-experimenters/blob/main/doc/rfc/00001-iot-lorawan-device.org][00001-iot-lorawan-device.org]]
 
+The current project is based around the [[https://store.arduino.cc/usa/mkr-wan-1310][Arduino MRKWAN1310 board]], which uses a
+SAND21 processor capable of low power operation, and a LoRa radio which allows
+data logging via the LoRaWAN network.
+
 ** What's in this Repository
 Subdirectories:
 - Arduino - Directory containing Arduino sketches used by the project.
