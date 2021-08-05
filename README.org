@@ -12,20 +12,13 @@ group. The groups github repository can be found at [[https://github.com/PaulSch
 Comments are most welcome. See the above link for the group details.
 
 ** Aim
-
 Design and Build IoT LoRaWAN capable device which can be used for
 environmental sensing.
 
-The initial discussion paper (RFC) can be found here:
-  :TOC:
+The initial discussion paper (RFC) can be found here: [[https://github.com/PaulSchulz/paeiot-experimenters/blob/main/doc/rfc/00001-iot-lorawan-device.org][00001-iot-lorawan-device.org]]
 
 ** What's in this Repository
-
-*** Arduino
-Arduino sketch driving the sensor.
-
-*** Blog
-Project Progress Reports and Options - [[blog/index.org][Blog]]
-
-*** Images
-Pictures, diagrams
+Subdirectories:
+- Arduino - Directory containing Arduino sketches used by the project.
+- [[blog/index.org][Blog]] - Progress Reports and Updates
+- Images - Pictures, diagrams

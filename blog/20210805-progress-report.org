@@ -20,12 +20,19 @@ We have:
 - Connected the Arduino MKRWAN1510 board to two DHT22 (AM2302) Temperature and
   Humidity sensors;
 - Run the example LoRaWAN on the MKRWAN1510 (from the LORAWAN Arduino Library);
-- Modified and written an Arduino sketch which reads the Temperature and Humidity Sensors and transmits them to an MQTT application via The Things Stack, *every 2 minutes*;
+- Modified and written an Arduino sketch which reads the Temperature and
+  Humidity Sensors and transmits them to an MQTT application via The Things
+  Stack, *every 2 minutes*;
 - Modified exiting *NodeRED* configuration to interpret data and save into
   *InfluxDB* database, which is then plotted with *Grafana* dashboard. (These
   services were already existing resources.); and
-- Tested prototype, with battery and solar power charging. It ran for several days, reliably collecting data.
+- Tested prototype, with battery and solar power charging. It ran for several
+  days, reliably collecting data.
 
+Related:
+- Investigated method for using git with 'ardunio_secrets.h' file without
+  leaking credentials (git [ignore|unignore|ignored]).
+  
 ** Outstanding Issues
 ***  Initial login and authentication with the LoRaWAN network
 The LoRa radio does not authenticate with the LoRaWAN network reliably first
@@ -45,6 +52,11 @@ Once connected, transmission and reception of data is
 - Modify to use Arduino Low Power library.
 
 ** What else to do...
+*** Create Bill of Materials (BOM)
+- Include pricing and suppliers.
+*** Create Installation Instructions
+- How to download and use the code from this repository.
+- How to connect up the sensors, battery, solar panel
 *** Power budget calculations
 - We need to work out how much power is being drawn from battery, and how much power we can get from solar panel.
 - For how many 'cloudy' days can we remain powered and operating?
