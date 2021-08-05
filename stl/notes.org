@@ -14,7 +14,7 @@ TinkerCAD. (At some stage the designs will be redone on a more open platform.)
 ** paeiot-sensor-one-baseplate
 Baseplate design for mounting MKRWAN1310 board in enclosure.
 
-Statis: Work-in-progress
+Status: Work-in-progress
 
 Size/Shape
 - Thickness: 3mm
