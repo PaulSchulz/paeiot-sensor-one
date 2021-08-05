@@ -27,23 +27,22 @@ We have:
 - Tested prototype, with battery and solar power charging. It ran for several days, reliably collecting data.
 
 ** Outstanding Issues
-The following issues and problems need to be addressed.
-
 ***  Initial login and authentication with the LoRaWAN network
 The LoRa radio does not authenticate with the LoRaWAN network reliably first
 time (via OTAA). It will connect after several restarts/resets/power cycles.
 Once connected, transmission and reception of data is 
 
 ** What to do next
-- Make enquiries about LoRaWAN authentication issue.
+- Investigate LoRaWAN authentication issue.
 - Extend cable on temperature sensor to support inside/outside measurements.
-- Investigate enclosure options.
+- Investigate waterproof enclosure options.
 - Document wiring (wiring diagram).
 - Add status LED.
   - Flash status when starting up.
   - Flash Status when connecting/connected to LoRaWAN
   - Flash status LED when transmitting.
 - Create Github repository for "Sensor One" project
+- Modify to use Arduino Low Power library.
 
 ** What else to do...
 *** Power budget calculations
@@ -51,4 +50,4 @@ Once connected, transmission and reception of data is
 - For how many 'cloudy' days can we remain powered and operating?
 
 *** Radio Budget
-- For how long is the LoRa radio transmitting?
+- How long is the LoRa radio transmitting?
