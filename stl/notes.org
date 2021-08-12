@@ -18,10 +18,12 @@ Status: Work-in-progress
 
 Size/Shape
 - Thickness: 3mm
-- Width: 100mm
-- Height: 70mm
-- Corner cut-outs: 13mm radius
-- Battery Slot: 52mm x 6mm
+- Width: 85mm
+- Height: 60mm
+- Corner cut-outs: 10mm radius
+- Battery Slot: 52mm x 7mm
+
+- Mounting holes: 2x 4mm x 80mm centres
 
 MKRWAN1310 Board
 - Mounting Holes: 2.5mm
