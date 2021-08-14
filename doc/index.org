@@ -1,0 +1,18 @@
+[[../README.org][TOP]]
+-----
+* Documentation                                                           :TOC:
+  - [[#microprocessor-board][Microprocessor Board]]
+  - [[#enclosure][Enclosure]]
+  - [[#baseplate][Baseplate]]
+
+** Microprocessor Board
+MKRWAN1510
+
+** Enclosure
+- Suggested enclosure: Flanged Weatherproof Enclosure With PG-7 Cable Glands
+- Link: https://www.adafruit.com/product/3931
+
+** Baseplate
+3D Printed - See STL file
+
+

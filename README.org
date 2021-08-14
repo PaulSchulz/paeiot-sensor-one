@@ -24,6 +24,8 @@ data logging via the LoRaWAN network.
 ** What's in this Repository
 Subdirectories:
 - Arduino - Directory containing Arduino sketches used by the project.
-- [[blog/index.org][blog]]- Progress Reports and Updates
+- [[doc/index.org][doc]] - Design and development documentation
+- [[blog/index.org][blog]] - Progress Reports and Updates
 - images - Pictures, diagrams etc.
 - stl - Sources for 3D printed parts
+- fritzing - Sources for the Wiring Diagram, Printed Circuit Board (PCB) layout and production details, using the Friting application.

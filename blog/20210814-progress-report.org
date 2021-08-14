@@ -1,0 +1,63 @@
+[[../README.org][Top]] | [[index.org][Index]]
+-----
+* Progress Report - Thursday, 5 August 2021                               :TOC:
+  - [[#introduction][Introduction]]
+  - [[#progress][Progress]]
+  - [[#outstanding-issues][Outstanding Issues]]
+  - [[#other-issues][Other Issues]]
+  - [[#what-we-still-need-to-do-next][What (we still need to do) next]]
+  - [[#what-else-to-do][What else to do...]]
+
+** Introduction
+
+Second progress report for the "PAEIoT Sensor One" project.
+
+[[file:../images/20210803_163039_resized.jpg]]
+
+** Progress
+We have:
+- Continued with ongoing testing of first prototype. It has continued to run
+  well in wintery weather condition.
+- Had a conversation with *Arduino.CC* (thanks Robert) and amongst other things
+  discussed the OTAA authentication issue.
+- Received two waterproof boxes for mounting the sensor. These boxes from
+  [[https://adafruit.com][Adefruit]] cost US$9.95 and include two cable glands.
+- Designed and 3D Printed a baseplate for mounting the Arduino MKRWAN1310,
+  battery and cable connections.
+- Received a [[https://core-electronics.com.au/usb-power-meter-color-tft-lcd.html][USB Power Monitor]] and started looking at power usage of the sensor
+  board. (The solar panel was producing 0.141A @ 5.25V for powering the board
+  and recharging the battery.)
+- Started investigating '[[https://fritzing.org/][Fritzing]]' to produce a wiring diagram. (See the
+  fritzing directory.) Fritzing also allows easy creation of circuit board
+  layouts, as well as easy ordering and production. It is possible to product 10
+  double sided boards to fit onto the MKRWAN1310, to hold all of the sensor
+  connections for
+
+** Outstanding Issues
+*** (In progress) Initial login and authentication with the LoRaWAN network
+See above.
+
+** Other Issues
+*** The [[https://reprap.org/wiki/RepRapPro_Huxley][ReprapPro Huxley]] 3D printer being used is having reliability issues. It will print the first layer reliably, but then fail on the second or so. It proably needs the hot-end rebuilt. 
+
+** What (we still need to do) next
+- Extend cable on temperature sensor to support inside/outside measurements.
+- Complete wiring diagram.
+- Add status LED.
+  - Flash status when starting up.
+  - Flash Status when connecting/connected to LoRaWAN
+  - Flash status LED when transmitting.
+- Modify to use Arduino Low Power library and confirm power savings.
+
+** What else to do...
+*** Create Bill of Materials (BOM)
+- Include pricing and suppliers.
+*** Create Installation Instructions
+- How to download and use the code from this repository.
+- How to connect up the sensors, battery, solar panel
+*** Power budget calculations
+- We need to work out how much power is being drawn from battery, and how much
+  power we can get from solar panel.
+- For how many 'cloudy' days can we remain powered and operating?
+*** Radio Budget
+- How long is the LoRa radio transmitting?
