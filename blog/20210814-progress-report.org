@@ -29,9 +29,8 @@ We have:
   and recharging the battery.)
 - Started investigating '[[https://fritzing.org/][Fritzing]]' to produce a wiring diagram. (See the
   fritzing directory.) Fritzing also allows easy creation of circuit board
-  layouts, as well as easy ordering and production. It is possible to product 10
-  double sided boards to fit onto the MKRWAN1310, to hold all of the sensor
-  connections for
+  layouts, as well as easy ordering and production. It is possible to produce 6
+  double sided boards to fit onto the MKRWAN1310 for 11.09€.
 
 ** Outstanding Issues
 *** (In progress) Initial login and authentication with the LoRaWAN network
