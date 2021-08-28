@@ -25,11 +25,14 @@ We have:
 - Initial attempt with '[[https://fritzing.org/][Fritzing]]' to produce a printed circuit board as shield
   See file in 'fritzing' directory for sources.
 - Build a weather shield enclosure for external sensor.
-  
+
+#+caption: Initial attempt at circuit board design with Fritzing.
 [[file:../images/fritzing_circuitboard_v0.png]]
 
 ** Outstanding Issues
 *** Upgrade Firmware on MRKLAN1301 and LAN Library
+The existing MKRWAN1310 boards uses whatever the firmware was that came with the
+board, and this needs to be updated. It has been suggested that the LoRaWAN connection issue is related to this.
 
 ** What (we still need to do) next
 - Extend cable on temperature sensor to support inside/outside measurements.

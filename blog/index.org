@@ -1,8 +1,9 @@
 [[../README.org][TOP]]
 -----
-* Blog Articles :TOC:
+* Blog Articles                                                           :TOC:
   - [[#progress-reports][Progress Reports]]
 
 ** Progress Reports
 - [[20210805-progress-report.org]]
 - [[20210814-progress-report.org]]
+- [[20210828-progress-report.org]]
