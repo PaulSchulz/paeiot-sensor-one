@@ -1,0 +1,66 @@
+[[../README.org][Top]] | [[index.org][Index]]
+-----
+* Progress Report - Saturday, 28 August 2021                              :TOC:
+  - [[#introduction][Introduction]]
+  - [[#progress][Progress]]
+  - [[#outstanding-issues][Outstanding Issues]]
+  - [[#what-we-still-need-to-do-next][What (we still need to do) next]]
+  - [[#what-else-to-do][What else to do...]]
+  - [[#other-notes][Other Notes]]
+
+** Introduction
+
+This is the third progress report for the "PAEIoT Sensor One" project.
+
+[[file:../images/20210803_163039_resized.jpg]]
+[[file:../images/20210823_114212_resized.jpg]]
+[[file:../images/20210823_115727_resized.jpg]]
+
+** Progress
+We have:
+- Continued with ongoing testing of first prototype. It has continued to run
+  well in wintery weather condition. Recorded Adelaide's coldest day of the year
+  on Friday, 27 August
+- 3D Printed better baseplate (2 copies) using the #d Printer at the PAE Library Maker Space at the Parks Library.
+- Initial attempt with '[[https://fritzing.org/][Fritzing]]' to produce a printed circuit board as shield
+  See file in 'fritzing' directory for sources.
+- Build a weather shield enclosure for external sensor.
+  
+[[file:../images/fritzing_circuitboard_v0.png]]
+
+** Outstanding Issues
+*** Upgrade Firmware on MRKLAN1301 and LAN Library
+
+** What (we still need to do) next
+- Extend cable on temperature sensor to support inside/outside measurements.
+- Complete wiring diagram.
+- Add status LED.
+  - Flash status when starting up.
+  - Flash Status when connecting/connected to LoRaWAN
+  - Flash status LED when transmitting.
+- Modify to use Arduino Low Power library and confirm power savings.
+
+** What else to do...
+*** Create Bill of Materials (BOM)
+- Include pricing and suppliers.
+*** Create Installation Instructions
+- How to download and use the code from this repository.
+- How to connect up the sensors, battery, solar panel
+*** Power budget calculations
+- We need to work out how much power is being drawn from battery, and how much
+  power we can get from solar panel.
+- For how many 'cloudy' days can we remain powered and operating?
+*** Radio Budget
+- How long is the LoRa radio transmitting?
+
+-----
+** Other Notes
+*** Using Image Magick to rescale images
+On my Ubuntu Laptop, images and photos for this blog have been re-scaled using the
+'convert' tool from the Image Magick suite of tools
+
+The following will produce a resized image with height 300px.
+#+begin_src shell
+  FILE=20210823_114212.jpg
+  convert $FILE -resize x300 ${FILE%.jpg}_resized.jpg
+#+end_src
