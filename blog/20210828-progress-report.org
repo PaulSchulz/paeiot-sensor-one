@@ -11,10 +11,12 @@
 ** Introduction
 
 This is the third progress report for the "PAEIoT Sensor One" project.
-
+[[file:../images/20210827_070000_resized.jpg]]
 [[file:../images/20210803_163039_resized.jpg]]
+[[file:../images/20210828_000000_resized.jpg]]
 [[file:../images/20210823_114212_resized.jpg]]
 [[file:../images/20210823_115727_resized.jpg]]
+[[file:../images/20210818_143218_resized.jpg]]
 
 ** Progress
 We have:
@@ -24,7 +26,7 @@ We have:
 - 3D Printed better baseplate (2 copies) using the #d Printer at the PAE Library Maker Space at the Parks Library.
 - Initial attempt with '[[https://fritzing.org/][Fritzing]]' to produce a printed circuit board as shield
   See file in 'fritzing' directory for sources.
-- Build a weather shield enclosure for external sensor.
+- Build a weather shield enclosure for external sensor, using available plastic containers.
 
 #+caption: Initial attempt at circuit board design with Fritzing.
 [[file:../images/fritzing_circuitboard_v0.png]]
