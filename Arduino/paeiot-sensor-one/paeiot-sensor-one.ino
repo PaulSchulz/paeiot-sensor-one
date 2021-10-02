@@ -38,7 +38,7 @@ uint32_t delayMS;
 //////////////////////////////////////////////////////////////////////////////
 void setup() {
     Serial.begin(9600);
-    while (!Serial);
+    //    while (!Serial);
     Serial.println(F("------------------------------------"));
     Serial.println(F("---     Sensor One               ---"));
     Serial.println(F("---     PAE IoT Experimenters    ---"));
