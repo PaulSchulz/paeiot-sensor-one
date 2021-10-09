@@ -1,0 +1,114 @@
+[[../README.org][Top]] | [[index.org][Index]]
+-----
+* Progress Report - Saturday, 28 August 2021                              :TOC:
+  - [[#introduction][Introduction]]
+  - [[#progress][Progress]]
+  - [[#outstanding-issues][Outstanding Issues]]
+  - [[#what-to-do-next][What to do next]]
+  - [[#what-else-to-do][What else to do]]
+
+** Introduction
+This is the fifth progress report for the "PAEIoT Sensor One" project.
+[[file:../images/20211003_123249_resized.jpg]]
+[[file:../images/20211003_123312_resized.jpg]]
+[[file:../images/20211008_182908_resized.jpg]]
+[[file:../images/20211008_182954_resized.jpg]]
+[[file:../images/20211008_184326_resized.jpg]]
+
+** Progress
+*** Events
+During the last week, strong overnight winds blew over the greenhouse enclosure
+containing Prototype 1 unit and caused the circuit board to get exposed to rain
+and suffer water damage. Attempts for minimise the damage caused by corrosion
+(soaking in isopropyl-alcohol and allowing to thoroughly dry out) did not
+restore full functionality to the board. 
+
+When powering on and monitoring via the serial port, the processor appears to be
+working OK, but not the LoRa radio, which fail to respond during the radio
+initialisation, which subsequently times out.
+
+It is suspected that there is water damage, corrosion, or moisture under the
+radio module shielding. This is an area which can not be readily inspected.
+
+As a result, to continue testing, the second prototype board was functionally
+completed and installed in its place. Prototype 2 (sally) uses the PCB v1.0 with
+modifications, in the weather proof enclosure, with same battery, solar panel
+and sensor as Prototype 1 (laura), as well as the addition of the internal micro
+antenna.
+
+*** Prototyping
+|-------------+---------------------------------------------+---------|
+| Prototype 1 | Ongoing testing has ceased die to damage.   | STOPPED |
+| (laura)     | Module Firmware:   ARD-078 1.2.0            |         |
+|-------------+---------------------------------------------+---------|
+| Prototype 2 | Uses PCB v1.0 with modifications.           | ONGOING |
+| (sally)     | Uses new internal micro antenna.            |         |
+|             | New board configuration process.            |         |
+|             | Upgraded LoRa radio firmware: ARD-078 1.2.3 |         |
+|             | Configured TTNv3 to accept data.            |         |
+|             | Configured Grafana to plot data.            |         |
+|             | Installed in testing location.              |         |
+|-------------+---------------------------------------------+---------|
+
+*** Fritzing
+|-----------+--------------------------------------------+---------|
+| Layout    | PCB updated to v1.1 with correct template. | ONGOING |
+|-----------+--------------------------------------------+---------|
+
+*** Coding
+|-----------+------------------------------------------------+-------|
+| Debugging | Issue found with initial Serial initialisaiton | FIXED |
+|-----------+------------------------------------------------+-------|
+
+*** MKRWAN1310 Testing, Installation and Bring-up Process
+- Use Arduino IDE with Device support and MKRWAN libraries. The web based IDE
+  will have the most up to date version of the official libraries.
+- Upgrade LoRa Firmware: From examples install sketch 'MKRWANFWUpdate_standalone'
+- From examples, install 'FirstConfiguration' - change band plan from EU to AU915
+  Add to sketch: modem.sendMask("ff000000f000ffff00020000");
+
+** Outstanding Issues
+*** CANCEL Upgrade LAN Library
+CLOSED: [2021-10-09 Sat 14:31]
+Upgrading the radio module firmware (and removing the wait for the serial
+connection) has allowed the sensor to now reliably connect to the LoRaWAN
+network without any other issues.
+
+*** CANCEL Order new version o circit board
+CLOSED: [2021-10-09 Sat 14:34]
+Ordering new circuit boards now appears to include a 20 euro shipping fee which
+wasn't included in the first batch. Need to investgate this before doing another
+order or v1.1. May skip top v1.2 with additional functionality.
+
+** What to do next
+*** TODO Code
+**** Add status LED.
+  - Flash status when starting up.
+  - Flash Status when connecting/connected to LoRaWAN
+  - Flash status LED when transmitting.
+**** Modify to use Arduino Low Power library and confirm power savings.
+*** TODO Create Bill of Materials (BOM)
+- Include pricing and suppliers.  
+*** TODO Rework PCB
+- Expand number of sensor channels to 4
+- Add option for 5V power-in with Buck Converter, instead of USB.
+*** TODO Rework Base plate design
+- Expand battery slot to hold 
+  
+** What else to do
+*** Investigate additional waterproofing
+- Conformal coating / potting for MKRWAN1310.
+- Sensor cabling into/out-of enclosure.
+*** Create Installation Instructions
+- How to test and install, upgrade sotware on MKRWAN1310.
+- How to download and use the code from this repository.
+- How to connect up the sensors, battery, solar panel
+*** Power budget calculations
+- We need to work out how much power is being drawn from battery, and how much
+  power we can get from solar panel.
+- For how many 'cloudy' days can we remain powered and operating?
+*** Radio Budget
+- How long is the LoRa radio transmitting?
+
+
+-----
