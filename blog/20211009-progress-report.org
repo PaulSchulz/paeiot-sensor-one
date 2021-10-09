@@ -37,28 +37,29 @@ and sensor as Prototype 1 (laura), as well as the addition of the internal micro
 antenna.
 
 *** Prototyping
-|-------------+---------------------------------------------+---------|
-| Prototype 1 | Ongoing testing has ceased die to damage.   | STOPPED |
-| (laura)     | Module Firmware:   ARD-078 1.2.0            |         |
-|-------------+---------------------------------------------+---------|
-| Prototype 2 | Uses PCB v1.0 with modifications.           | ONGOING |
-| (sally)     | Uses new internal micro antenna.            |         |
-|             | New board configuration process.            |         |
-|             | Upgraded LoRa radio firmware: ARD-078 1.2.3 |         |
-|             | Configured TTNv3 to accept data.            |         |
-|             | Configured Grafana to plot data.            |         |
-|             | Installed in testing location.              |         |
-|-------------+---------------------------------------------+---------|
+**** DONE Prototype 1 (laura)
+CLOSED: [2021-10-09 Sat 20:54]
+
+Ongoing testing has ceased due to damage. Module Firmware: ARD-078 1.2.0 
+
+**** ONGOING Prototype 2 (sally)
+Prototype completed and installed for testing.
+- Uses PCB v1.0 with modifications.
+- Uses new internal micro antenna.
+- Uses new board configuration process.
+- Upgraded LoRa radio firmware: ARD-078 1.2.3
+- Configured TTNv3 to accept data.
+- Configured Grafana to plot data.
+- Installed in testing location. 
 
 *** Fritzing
-|-----------+--------------------------------------------+---------|
-| Layout    | PCB updated to v1.1 with correct template. | ONGOING |
-|-----------+--------------------------------------------+---------|
+**** ONGOING Layout
+PCB updated to v1.1 with correct template.
 
 *** Coding
-|-----------+------------------------------------------------+-------|
-| Debugging | Issue found with initial Serial initialisaiton | FIXED |
-|-----------+------------------------------------------------+-------|
+**** DONE Debugging
+CLOSED: [2021-10-09 Sat 21:05]
+- Issue found with initial Serial initialisaiton
 
 *** MKRWAN1310 Testing, Installation and Bring-up Process
 - Use Arduino IDE with Device support and MKRWAN libraries. The web based IDE
@@ -68,13 +69,13 @@ antenna.
   Add to sketch: modem.sendMask("ff000000f000ffff00020000");
 
 ** Outstanding Issues
-*** CANCEL Upgrade LAN Library
-CLOSED: [2021-10-09 Sat 14:31]
+*** CANCELLED Upgrade LAN Library
+CLOSED: [2021-10-09 Sat 21:08]
 Upgrading the radio module firmware (and removing the wait for the serial
 connection) has allowed the sensor to now reliably connect to the LoRaWAN
 network without any other issues.
 
-*** CANCEL Order new version o circit board
+*** CANCELLED Order new version o circit board
 CLOSED: [2021-10-09 Sat 14:34]
 Ordering new circuit boards now appears to include a 20 euro shipping fee which
 wasn't included in the first batch. Need to investgate this before doing another
@@ -82,11 +83,12 @@ order or v1.1. May skip top v1.2 with additional functionality.
 
 ** What to do next
 *** TODO Code
-**** Add status LED.
-  - Flash status when starting up.
-  - Flash Status when connecting/connected to LoRaWAN
-  - Flash status LED when transmitting.
-**** Modify to use Arduino Low Power library and confirm power savings.
+**** Add status LED
+- Flash status when starting up.
+- Flash Status when connecting/connected to LoRaWAN
+- Flash status LED when transmitting.
+**** Modify to use low power settings and confirm power usage
+- Add the Arduino Low Power library
 *** TODO Create Bill of Materials (BOM)
 - Include pricing and suppliers.  
 *** TODO Rework PCB
@@ -98,7 +100,7 @@ order or v1.1. May skip top v1.2 with additional functionality.
 ** What else to do
 *** Investigate additional waterproofing
 - Conformal coating / potting for MKRWAN1310.
-- Sensor cabling into/out-of enclosure.
+- Water proofing cabling into/out-of enclosure.
 *** Create Installation Instructions
 - How to test and install, upgrade sotware on MKRWAN1310.
 - How to download and use the code from this repository.
