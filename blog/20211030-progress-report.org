@@ -80,6 +80,10 @@ options available:
 When using the profile (see image) then Regional Frequency settings stillyy needs
 to be tweeked after the device has been configured to choose 'Option B'.
 
+[[images/20211030-register-end-device.png]]
+
+[[images/20211030-network-layer.png]]
+
 **** Arduino WAN Firmware
 The firmware that comes with the MLRWAN1310 is version 1.2.0 and needs to be
 upgraded. A new version of the firmware (currently 1.3.0.0) is available via the
@@ -100,7 +104,21 @@ Oct 20211020"
 **** MKRWAN1310 Firmware
 When working with the MKRWAN1310, the example Arduino sketches provided with the
 MKRWAN library encourage that the MKRWAN1310 be upgraded to the latest firmware.
-As of this moment, the version 1.3.0.0 of the firmware is available, but it    
+As of this moment, the version 1.3.0.0 of the firmware is available, but it
+is broken for some reason.
+
+*** Construction
+**** Baseplate reworked
+The slot in the baseplate was made larger to accommodate a larger battery (10 mm
+rather than 7mm).
+
+This slot and possibly design needs to be changed as the battery fit is
+interfered with by lugs underneath from the enclosure. Battery should maybe be
+moved closer to the MKRWAN1310 board.
+
+Two baseplate versions available for battery sizes - 7mm and 10mm
+- paeiot-sensor-one-baseplate-7.stl
+- paeiot-sensor-one-baseplate-10.stl
 
 ** Outstanding Issues
 *** Arduino 
@@ -114,6 +132,10 @@ Band Plan option B (Regional Parameters version: PHY V1.0.2 REV B) still needs
 to be set separately, and Option A is the default option.
 
 ** What to do next
+*** TODO Bring up two new boards and built sensors
+- sensor-one-1
+- sensor-one-2
+
 *** TODO Produce a new version of circit board
 Circuit board (hat) need to be redesigned with the following features:
 - Add headers for 4 sensor channels
@@ -127,6 +149,10 @@ Add additional status messaging
   - Flash status when starting up.
   - Flash Status when connecting/connected to LoRaWAN
 **** Modify to use Arduino Low Power library and confirm power savings.
+
+*** TODO Baseplate
+- Rework battery slot.
+- Look for space for option of Buck Converter board (power supply). 
   
 ** What else to do...
 *** Create Bill of Materials (BOM)
