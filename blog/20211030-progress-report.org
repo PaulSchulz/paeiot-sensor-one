@@ -80,9 +80,9 @@ options available:
 When using the profile (see image) then Regional Frequency settings stillyy needs
 to be tweeked after the device has been configured to choose 'Option B'.
 
-[[images/20211030-register-end-device.png]]
+[[file:../images/20211030-register-end-device.png]]
 
-[[images/20211030-network-layer.png]]
+[[file:../images/20211030-network-layer.png]]
 
 **** Arduino WAN Firmware
 The firmware that comes with the MLRWAN1310 is version 1.2.0 and needs to be
