@@ -14,8 +14,12 @@ This is the sixth progress report for the "PAEIoT Sensor One" project. Delivery
 of two partially assembled sensors has been made to the Port Adelaide Library
 IoT Project has been made.
 
+[[file:../images/20211029_092800.jpg]]
+
 These sensors have each been programmed two collect 4 channels of temperature
 and humidity data every 10 minutes.
+
+[[file:../images/20211030_091138.jpg]]
 
 A box of a additional parts has been received for the Library project which will
 be built into more sensors.
@@ -100,6 +104,8 @@ Oct 20211020"
 - Simplified serial output
 - Additional processing of null measurments
 - Reading period set to 10 minutes
+
+[[file:../images/20211029_092852.jpg]]
 
 **** MKRWAN1310 Firmware
 When working with the MKRWAN1310, the example Arduino sketches provided with the
