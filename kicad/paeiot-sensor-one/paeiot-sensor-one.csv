@@ -1,0 +1,10 @@
+Reference, Value, Footprint, Datasheet
+"J2","Conn","Connector_PinHeader_2.54mm:PinHeader_1x15_P2.54mm_Vertical","~"
+"J3","Conn","Connector_PinHeader_2.54mm:PinHeader_1x15_P2.54mm_Vertical","~"
+"J7","Conn_01x03_Male","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal","~"
+"J6","Conn_01x03_Male","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal","~"
+"J1","Power","Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal","~"
+"R1","R_Small","Resistor_THT:R_Axial_DIN0414_L11.9mm_D4.5mm_P15.24mm_Horizontal","~"
+"D1","LED_Small","LED_THT:LED_D3.0mm","~"
+"J4","Conn_01x03_Male","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal","~"
+"J5","Conn_01x03_Male","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal","~"
