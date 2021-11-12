@@ -11,6 +11,8 @@ group. The groups github repository can be found at [[https://github.com/PaulSch
 
 Comments are most welcome. See the above link for the group details.
 
+[[file:images/20211111_142550.jpg]]
+
 ** Aim
 Design and Build IoT LoRaWAN capable device which can be used for
 environmental sensing.
