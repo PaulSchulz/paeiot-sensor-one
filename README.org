@@ -12,6 +12,7 @@ group. The groups github repository can be found at [[https://github.com/PaulSch
 Comments are most welcome. See the above link for the group details.
 
 [[file:images/20211111_142550.jpg]]
+[[file:images/20210805_121239.jpg]]
 
 ** Aim
 Design and Build IoT LoRaWAN capable device which can be used for
