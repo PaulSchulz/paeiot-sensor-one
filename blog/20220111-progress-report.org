@@ -1,0 +1,184 @@
+[[../README.org][Top]] | [[index.org][Index]]
+-----
+* Progress Report - Saturday, 30 September 2021                  :TOC:
+  - [[#introduction--summary][Introduction / Summary]]
+- [[#progress][Progress]]
+  - [[#prototypes--deployed-devices][Prototypes & Deployed Devices]]
+  - [[#progress-1][Progress]]
+  - [[#outstanding-issues][Outstanding Issues]]
+  - [[#what-to-do-next][What to do next]]
+  - [[#what-else-to-do][What else to do...]]
+  - [[#for-future-versions][For future versions]]
+
+** Introduction / Summary
+
+Welcome to the first progress report for 2022 and the seventh for the project.
+
+Since the last report, one of the sensor units has been installed at the Enfield
+Library, and is monitoring the temperature and humidity, both inside and out of
+the new beehive.
+
+[[file:../images/bees.jpg]]
+
+The Library has also installed a site outside for a native bee hotel, including
+large solar panels. This means that the location is going to be able to have a
+large array of environmental sensors added in due course.
+
+[[file:../images/bee-hotel.jpg]]
+
+Some long overdue changes have also been made to the 'Sensor One' software.
+
+The data packet format has been changed. Rather than sending a text based
+message with the sensor readings, the software has been switched to use an
+encoded format called [[https://docs.mydevices.com/docs/lorawan/cayenne-lpp][Cayenne Low Power Payload (Cayenne LPP)]]. This format uses
+predefined measurement types, which allows both data tagging and reduced byte
+count. This, in turn, allows more data to be sent in less time and will allow
+measurements to be sent at a higher rate.
+
+The 'Sensor One' hardware contains an I2C (eye-squared-sea) interface. This is a
+data bus which allows a large number of additional sensors to be added, linked
+together on a single set of cables. To the existing temperature and humidity
+sensor, we have added a carbon dioxide (CO2) and volatile organic compound (VOC)
+concentration sensor.
+
+This data is being collected in a test setup currently sitting in a kitchen, and
+it is possible to see the times when toast is being made and when the gas cooker
+is in use.
+
+At the system level, some work has also been done on scripting the process for
+installing a standalone (personal) IoT server, based on a Raspberry Pi 4. This
+would allow anyone to start collecting and displaying their sensor data quickly
+and easily. 
+
+The switch to using the Cayenne LPP packet format for data helps here as less
+changes need to be made when additional sensors are added, or more sensing units
+are deployed.
+
+* Progress 
+
+** Prototypes & Deployed Devices
+*** Prototype 2 (sally) - Ongoing Testing 
+
+This prototype continues to collect temperature and humidity data in the garden.
+The sensor has been raised up and attached to a stake so that it can catch any
+breeze, as it still appears to be reading a higher temperature.
+
+This sensor still uses the text based data protocol. 
+
+[[file:../images/sally-20220111.png]]
+
+*** Library Bees (sensor-one-3) 
+
+This sensor (as mentioned above) has been installed to monitor the interior and
+exterior temperature and humidity of the beehive that has been put in the
+Enfield Library.
+
+This sensor is still using the old data protocol.
+
+Due to location of the hive, there is no local power for network) access, so the
+sensor is powered by the LiPo Battery and periodically recharged by attaching a
+USB powerbank.
+
+[[file:../images/bees-20220111.png]]
+
+
+*** CO2 and VOC Concentrations (sensor-one-2) 
+
+As mentioned in the introduction, changes have been made to the sensor software
+to allow it to access I2C sensor hardware. as well as use the Cayenne LPP
+format in the Cora WAN data packets.
+
+Rather than decode the Cayenne LPP data in the The Things Network/Stack, there
+is a module available for Node-RED which will do the same thing. Using this
+allows more flexibility (eg. upgrades, deployment, backups) but the existing
+Node-RED module does not implement all of the Cayenne LPP specification, in
+particular the coding for 'concentration'.
+
+Fortunately, it is a relatively straight forward process to download the source
+code of the module, add the missing details and install the modified version as
+a local version. For bonus points, the changes have been sent back upstream as a
+'pull request' to the original [[https://github.com/ceugster/node-red-contrib-cayennelpp-extended][software on Github]]. "At this stage, the proposed
+changes have yet to be merged.
+
+
+
+** Progress
+*** Prototyping
+
+*** Fritzing
+No work done on Fritzing Prototypes or Documentation
+- Circuit Diagram
+- PCB Layout
+- PCB Production
+
+*** Coding
+
+**** Arduino WAN Firmware
+The firmware that comes with the MLRWAN1310 is version 1.2.0 and needs to be
+upgraded. A new version of the firmware (currently 1.3.0.0) is available via the
+Web Editor, but it didn't work (unsure why at this stage).
+
+The previous known working version 1.2.0 is being install via the desktop
+Arduino editor, using MKRWAN library version 1.1.0.
+
+**** Arduino Code
+
+**** MKRWAN1310 Firmware
+When working with the MKRWAN1310, the example Arduino sketches provided with the
+MKRWAN library encourage that the MKRWAN1310 be upgraded to the latest firmware.
+As of this moment, the version 1.3.0.0 of the firmware is available, but it
+is broken for some reason.
+
+*** Construction
+
+** Outstanding Issues
+*** Arduino 
+Correspondence needs to be sent to Arduino, or an issue submitted,
+regarding the new version of the MKRWAN1310 firmware (1.3.0), given that it
+doesn't work. 
+
+*** The Things Network
+It is an issue that when configuring a device in The Things Network, the AU915
+Band Plan option B (Regional Parameters version: PHY V1.0.2 REV B) still needs
+to be set separately, and Option A is the default option.
+
+** What to do next
+*** TODO Bring up two new boards and built sensors
+- sensor-one-1
+- sensor-one-2
+
+*** TODO Produce a new version of circit board
+Circuit board (hat) need to be redesigned with the following features:
+- Add headers for 4 sensor channels
+- Add header for 5V supply, instead of power from USB
+- Add buck converter option (maybe)
+- Add power and battery voltage sensing circuit (maybe)
+
+*** TODO Arduino Code
+**** Add status LED.
+Add additional status messaging
+  - Flash status when starting up.
+  - Flash Status when connecting/connected to LoRaWAN
+**** Modify to use Arduino Low Power library and confirm power savings.
+
+*** TODO Baseplate
+- Rework battery slot.
+- Look for space for option of Buck Converter board (power supply). 
+  
+** What else to do...
+*** Create Bill of Materials (BOM)
+- Include pricing and suppliers.
+*** Create Installation Instructions
+- How to download and use the code from this repository.
+- How to connect up the sensors, battery, solar panel
+*** Power budget calculations
+- We need to work out how much power is being drawn from battery, and how much
+  power we can get from solar panel.
+- For how many 'cloudy' days can we remain powered and operating?
+*** Radio Budget
+- How long is the LoRa radio transmitting?
+
+** For future versions
+(Details will be included here as they are raised.)
+
+-----
