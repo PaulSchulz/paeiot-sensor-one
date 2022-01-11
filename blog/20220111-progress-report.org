@@ -4,7 +4,7 @@
   - [[#introduction--summary][Introduction / Summary]]
 - [[#progress][Progress]]
   - [[#prototypes--deployed-devices][Prototypes & Deployed Devices]]
-  - [[#progress-1][Progress]]
+  - [[#hardware][Hardware]]
   - [[#outstanding-issues][Outstanding Issues]]
   - [[#what-to-do-next][What to do next]]
   - [[#what-else-to-do][What else to do...]]
@@ -55,15 +55,16 @@ changes need to be made when additional sensors are added, or more sensing units
 are deployed.
 
 * Progress 
-
 ** Prototypes & Deployed Devices
-*** Prototype 2 (sally) - Ongoing Testing 
+*** Prototype 2 (sally) - Ongoing Testing
 
 This prototype continues to collect temperature and humidity data in the garden.
 The sensor has been raised up and attached to a stake so that it can catch any
 breeze, as it still appears to be reading a higher temperature.
 
-This sensor still uses the text based data protocol. 
+This sensor still uses the text based data protocol. The break in the data was
+due to the power supply being interrupted by the chickens knocking over the
+solar panel.
 
 [[file:../images/sally-20220111.png]]
 
@@ -79,8 +80,10 @@ Due to location of the hive, there is no local power for network) access, so the
 sensor is powered by the LiPo Battery and periodically recharged by attaching a
 USB powerbank.
 
-[[file:../images/bees-20220111.png]]
+The break in the graph is when the sensor battery ran flat over the
+Christmas/New Year break.
 
+[[file:../images/bees-20220111.png]]
 
 *** CO2 and VOC Concentrations (sensor-one-2) 
 
@@ -100,53 +103,52 @@ a local version. For bonus points, the changes have been sent back upstream as a
 'pull request' to the original [[https://github.com/ceugster/node-red-contrib-cayennelpp-extended][software on Github]]. "At this stage, the proposed
 changes have yet to be merged.
 
+** Hardware
+*** KiCAD 
 
+After some discussion with some more knowledgable members of the PAE IoT
+Experimenters group, it was decided to move the PCB design from Fritzing to
+KiCAD. (The Fritzing file will not be removed and will still be made available.)
 
-** Progress
-*** Prototyping
+Some assistance was required to get started with KiCAD, but once a set of
+sensible default settings had been configured, it was quite fast to use, as it
+makes extensive use of keystrokes to switch between features and drawing modes. 
 
-*** Fritzing
-No work done on Fritzing Prototypes or Documentation
-- Circuit Diagram
-- PCB Layout
-- PCB Production
+Having a cheat sheet handy though, listing all of the keyboard shortcuts, would
+be a very useful thing to have. The circuit schematic and PCB layout files can
+be found in the [[file://../kicad/paeiot-sensor-one][kicad/paeiot-sensor-one]] sub directory.
 
 *** Coding
 
-**** Arduino WAN Firmware
-The firmware that comes with the MLRWAN1310 is version 1.2.0 and needs to be
-upgraded. A new version of the firmware (currently 1.3.0.0) is available via the
-Web Editor, but it didn't work (unsure why at this stage).
-
-The previous known working version 1.2.0 is being install via the desktop
-Arduino editor, using MKRWAN library version 1.1.0.
-
-**** Arduino Code
-
-**** MKRWAN1310 Firmware
-When working with the MKRWAN1310, the example Arduino sketches provided with the
-MKRWAN library encourage that the MKRWAN1310 be upgraded to the latest firmware.
-As of this moment, the version 1.3.0.0 of the firmware is available, but it
-is broken for some reason.
+(Changes as previously mentioned.)
 
 *** Construction
 
+(No changes)
+
 ** Outstanding Issues
+*** Node-RED
+
+Changes made to support 'contration sensor' need to be accepted by upstream.
+
 *** Arduino 
-Correspondence needs to be sent to Arduino, or an issue submitted,
-regarding the new version of the MKRWAN1310 firmware (1.3.0), given that it
-doesn't work. 
+
+Carried from last report, correspondence needs to be sent to Arduino, or an
+issue submitted, regarding the new version of the MKRWAN1310 firmware (1.3.0),
+given that it doesn't work.
+
+This should be tested again.
 
 *** The Things Network
-It is an issue that when configuring a device in The Things Network, the AU915
-Band Plan option B (Regional Parameters version: PHY V1.0.2 REV B) still needs
-to be set separately, and Option A is the default option.
+
+Carried from last report. It is an issue that when configuring a device in The
+Things Network, the AU915 Band Plan option B (Regional Parameters version: PHY
+V1.0.2 REV B) still needs to be set separately, and Option A is the default
+option.
+
+This is still the case.
 
 ** What to do next
-*** TODO Bring up two new boards and built sensors
-- sensor-one-1
-- sensor-one-2
-
 *** TODO Produce a new version of circit board
 Circuit board (hat) need to be redesigned with the following features:
 - Add headers for 4 sensor channels

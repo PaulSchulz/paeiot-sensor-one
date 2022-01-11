@@ -1,14 +1,18 @@
 
 [[../README.org][TOP]]
 -----
-* Blog Articles                                                           :TOC:
-  - [[#progress-reports][Progress Reports]]
+* Articles                                                           :TOC:
+- [[#progress-reports][Progress Reports]]
+  - [[#2021][2021]]
+  - [[#2022][2022]]
 
-** Progress Reports
+* Progress Reports
+** 2021
 - [[20210805-progress-report.org]]
 - [[20210814-progress-report.org]]
 - [[20210828-progress-report.org]]
 - [[20211002-progress-report.org]]
 - [[20211009-progress-report.org]]
 - [[20211030-progress-report.org]]
-
+** 2022
+- [[20220111-progress-report.org]]
