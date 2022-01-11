@@ -103,6 +103,8 @@ a local version. For bonus points, the changes have been sent back upstream as a
 'pull request' to the original [[https://github.com/ceugster/node-red-contrib-cayennelpp-extended][software on Github]]. "At this stage, the proposed
 changes have yet to be merged.
 
+[[file:../images/sensor-one-2-20220111.jpg]]
+
 ** Hardware
 *** KiCAD 
 
@@ -149,6 +151,10 @@ option.
 This is still the case.
 
 ** What to do next
+*** Connect more I2C sensor types
+- Radiation sensor (geiger tube)
+- Particulate sensor - not I2C, but serial based.
+
 *** TODO Produce a new version of circit board
 Circuit board (hat) need to be redesigned with the following features:
 - Add headers for 4 sensor channels
