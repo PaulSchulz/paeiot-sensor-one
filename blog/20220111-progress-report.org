@@ -118,11 +118,20 @@ makes extensive use of keystrokes to switch between features and drawing modes.
 
 Having a cheat sheet handy though, listing all of the keyboard shortcuts, would
 be a very useful thing to have. The circuit schematic and PCB layout files can
-be found in the [[file://../kicad/paeiot-sensor-one][kicad/paeiot-sensor-one]] sub directory.
+be found in the [[file://../kicad/paeiot-sensor-one][kicad/paeiot-sensor-one]] sub directory. (The schematic of the board
+we are creating can be found [[file:../kicad/paeiot-sensor-one/schematic.pdf][here]].)
 
 *** Coding
 
-(Changes as previously mentioned.)
+**** Cayenne LPP Data Format
+
+Details of the Cayenne LPP format can be found here [[https://docs.mydevices.com/docs/lorawan/cayenne-lpp][Cayenne Low Power Payload
+(Cayenne LPP)]].
+
+A module for NodeRED can be found here -   [[https://github.com/ceugster/node-red-contrib-cayennelpp-extended]]
+which is a fork of another module.
+
+[[file:../images/nodered-20220111.png]]
 
 *** Construction
 
@@ -185,6 +194,8 @@ Add additional status messaging
 - For how many 'cloudy' days can we remain powered and operating?
 *** Radio Budget
 - How long is the LoRa radio transmitting?
+*** Investigate more sensors
+eg. Wind speed and direction - https://hackaday.com/2022/01/11/3d-printed-sensor-for-finding-wind-direction-and-likely-much-more/
 
 ** For future versions
 (Details will be included here as they are raised.)
