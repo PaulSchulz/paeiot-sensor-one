@@ -16,3 +16,4 @@
 - [[20211030-progress-report.org]]
 ** 2022
 - [[20220111-progress-report.org]]
+- [[20220119-progress-report.org]]
