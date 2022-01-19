@@ -10,9 +10,9 @@ on the Sensor One This is just because I am a little bit excited to show off
 what I have been able to do recently.
 
 
-I was thinking about taking the sensor so far and seeing how easily it could be
-made into an indoor unit, with what we have done so far. There has been some
-announcements about when Schools are going to start again this year. 
+I was thinking about taking the sensor a little further and seeing how easily it
+could be made into an indoor unit, with what we have done so far. There has been
+some announcements about when Schools are going to start again this year.
 
 A fried, who is a principal at a Primary School in South Australia, ran a
 project last year using a CO2 sensor to monitor air quality, so the students
