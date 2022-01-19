@@ -5,24 +5,27 @@
 
 * Summary
 
-This is a quick update, rathwr than a full progress report, on some recent work
-on the Sensor One This is just because I am a little bit excited to show off
-what I have been able to do recently.
-
+This is a quick update, rather than a full progress report, on some recent work
+on the Sensor One. This is because I am a little excited to show off what has
+been recently done.
 
 I was thinking about taking the sensor a little further and seeing how easily it
-could be made into an indoor unit, with what we have done so far. There has been
-some announcements about when Schools are going to start again this year.
+could be made into an indoor unit. 
 
-A fried, who is a principal at a Primary School in South Australia, ran a
-project last year using a CO2 sensor to monitor air quality, so the students
-could tell when more fresh air and ventilation was required. Their project has
-been featured on the ABC and a video of their efforts is available here: [[https://www.facebook.com/LobethalLutheranSchool/videos/296081939214976][ABC
-Report]]
+There has been some announcements about delaying when Schools are going to start
+again this year, because of COVID-19. A friend, who is a principal at a Primary
+School in South Australia, ran a project last year using a CO2 sensor to monitor
+air quality, so the students could tell when more fresh air and ventilation was
+required. Their project has been featured on the ABC and a video of their
+efforts is available here: [[https://www.facebook.com/LobethalLutheranSchool/videos/296081939214976][ABC Report]]
 
-The initial design of an enclosure separated out the sensors and added a small
-fan for drawing air across them. There was also room for an internal battery
-(LiPo) as well as a USB attached secondary battery, or charging cable.
+The PAE IoT - Sensor One, Air Quality Sensor in able do the same things as the
+Primary Schools sensor (it uses the same divice) but it can then report the data
+in real time using the LoRaWAN radio network and The Things Stack.
+
+Our initial design of an indoors enclosure separated out the sensors and added a
+small fan for drawing air. There was also room for an internal battery (LiPo) as
+well as a second USB battery, or charging cable.
 
 [[file:../images/20220119_211350.jpg]]
 
