@@ -1,0 +1,179 @@
+[[../README.org][Top]] | [[index.org][Index]]
+-----
+* Progress Report - Saturday, 30 September 2021                  :TOC:
+  - [[#introduction][Introduction]]
+  - [[#contents][Contents]]
+  - [[#progress][Progress]]
+  - [[#outstanding-issues][Outstanding Issues]]
+  - [[#what-to-do-next][What to do next]]
+  - [[#what-else-to-do][What else to do...]]
+  - [[#for-future-versions][For future versions]]
+
+** Introduction
+This is the sixth progress report for the "PAEIoT Sensor One" project. Delivery
+of two partially assembled sensors has been made to the Port Adelaide Library
+IoT Project has been made.
+
+[[file:../images/20211029_092800.jpg]]
+
+These sensors have each been programmed two collect 4 channels of temperature
+and humidity data every 10 minutes.
+
+[[file:../images/20211030_091138.jpg]]
+
+A box of a additional parts has been received for the Library project which will
+be built into more sensors.
+ 
+** Contents
+  - [[#introduction][Introduction]]
+  - [[#progress][Progress]]
+  - [[#outstanding-issues][Outstanding Issues]]
+  - [[#what-we-still-need-to-do-next][What (we still need to do) next]]
+  - [[#what-else-to-do][What else to do...]]
+  - [[#for-future-versions][For future versions]]
+
+** Progress
+*** Prototyping
+|-------------+-------------------------------------------------+---------|
+| Prototype 1 | Removed from service. Being used for mechanical |         |
+|             | fit testing during sensor construction.         |         |
+|-------------+-------------------------------------------------+---------|
+| Prototype 2 | Being costructed with PCB v1.0                  | ONGOING |
+|             | Using enclosure with internal micro antenna     |         |
+|-------------+-------------------------------------------------+---------|
+
+*** Devices for Testing and Evaluation
+|--------------+-----------------------------------------------------+---------|
+| sensor-one-3 | Delivered in enclosure to PAE Library               |         |
+|              | with Sensor One v1.2 (4 channel)                    |         |
+|--------------+-----------------------------------------------------+---------|
+| sensor-one-4 | Delivered to PAE Library                            |         |
+|              | with Sensor One v1.2 (4 channel)                    |         |
+|--------------+-----------------------------------------------------+---------|
+| sensor-one-3 | Received for testing, programming and sensor build. |         |
+|--------------+-----------------------------------------------------+---------|
+| sensor-one-3 | Received for testing, programming and sensor build. |         |
+|--------------+-----------------------------------------------------+---------|
+
+*** Fritzing
+No work done on Fritzing Prototypes or Documentation
+- Circuit Diagram
+- PCB Layout
+- PCB Production
+
+*** Coding
+**** The Things Network
+A lot of time was spent trying to make the MKRWAN1310 work with the available
+Arduino Library (MKRWAN) and The Things Network (version 3). There have been a
+lot of subtle and not so subtle changes in both these projects, which has broken
+then end to end communication channel.
+
+A new template for the MKRWAN1310 in the Australian region (using AU915) was
+submitted to The Things Network, which aims to make it very simple to add this
+device for Australian users. This was accepted and now appears in the list of
+options available:
+
+|------------------+----------------------|
+| Brand            | Arduino SA           |
+| Model            | Arduino MKR WAN 1310 |
+| Hardware Ver.    | 1.0                  |
+| Firmware Ver.    | 1.2.3                |
+| Profile (Region) | AU_915_928           |
+|------------------+----------------------|
+
+When using the profile (see image) then Regional Frequency settings stillyy needs
+to be tweeked after the device has been configured to choose 'Option B'.
+
+[[file:../images/20211030-register-end-device.png]]
+
+[[file:../images/20211030-network-layer.png]]
+
+**** Arduino WAN Firmware
+The firmware that comes with the MLRWAN1310 is version 1.2.0 and needs to be
+upgraded. A new version of the firmware (currently 1.3.0.0) is available via the
+Web Editor, but it didn't work (unsure why at this stage).
+
+The previous known working version 1.2.0 is being install via the desktop
+Arduino editor, using MKRWAN library version 1.1.0.
+
+**** Arduino Code
+The Arduino code has had a lot of changes, with a new version "Sensor One v1.2 28
+Oct 20211020"
+- 4 Data channels are collected and transmitted via LoRaWAN (text format)
+- Status LED turned on during transmission / reception window
+- Simplified serial output
+- Additional processing of null measurments
+- Reading period set to 10 minutes
+
+[[file:../images/20211029_092852.jpg]]
+
+**** MKRWAN1310 Firmware
+When working with the MKRWAN1310, the example Arduino sketches provided with the
+MKRWAN library encourage that the MKRWAN1310 be upgraded to the latest firmware.
+As of this moment, the version 1.3.0.0 of the firmware is available, but it
+is broken for some reason.
+
+*** Construction
+**** Baseplate reworked
+The slot in the baseplate was made larger to accommodate a larger battery (10 mm
+rather than 7mm).
+
+This slot and possibly design needs to be changed as the battery fit is
+interfered with by lugs underneath from the enclosure. Battery should maybe be
+moved closer to the MKRWAN1310 board.
+
+Two baseplate versions available for battery sizes - 7mm and 10mm
+- paeiot-sensor-one-baseplate-7.stl
+- paeiot-sensor-one-baseplate-10.stl
+
+** Outstanding Issues
+*** Arduino 
+Correspondence needs to be sent to Arduino, or an issue submitted,
+regarding the new version of the MKRWAN1310 firmware (1.3.0), given that it
+doesn't work. 
+
+*** The Things Network
+It is an issue that when configuring a device in The Things Network, the AU915
+Band Plan option B (Regional Parameters version: PHY V1.0.2 REV B) still needs
+to be set separately, and Option A is the default option.
+
+** What to do next
+*** TODO Bring up two new boards and built sensors
+- sensor-one-1
+- sensor-one-2
+
+*** TODO Produce a new version of circit board
+Circuit board (hat) need to be redesigned with the following features:
+- Add headers for 4 sensor channels
+- Add header for 5V supply, instead of power from USB
+- Add buck converter option (maybe)
+- Add power and battery voltage sensing circuit (maybe)
+
+*** TODO Arduino Code
+**** Add status LED.
+Add additional status messaging
+  - Flash status when starting up.
+  - Flash Status when connecting/connected to LoRaWAN
+**** Modify to use Arduino Low Power library and confirm power savings.
+
+*** TODO Baseplate
+- Rework battery slot.
+- Look for space for option of Buck Converter board (power supply). 
+  
+** What else to do...
+*** Create Bill of Materials (BOM)
+- Include pricing and suppliers.
+*** Create Installation Instructions
+- How to download and use the code from this repository.
+- How to connect up the sensors, battery, solar panel
+*** Power budget calculations
+- We need to work out how much power is being drawn from battery, and how much
+  power we can get from solar panel.
+- For how many 'cloudy' days can we remain powered and operating?
+*** Radio Budget
+- How long is the LoRa radio transmitting?
+
+** For future versions
+(Details will be included here as they are raised.)
+
+-----
