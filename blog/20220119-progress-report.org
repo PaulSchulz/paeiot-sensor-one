@@ -1,0 +1,49 @@
+[[../README.org][Top]] | [[index.org][Index]]
+-----
+* Progress Report - Wednesday, 19 January 2022                            :TOC:
+- [[#summary][Summary]]
+
+* Summary
+
+This is a quick update, rathwr than a full progress report, on some recent work
+on the Sensor One This is just because I am a little bit excited to show off
+what I have been able to do recently.
+
+
+I was thinking about taking the sensor so far and seeing how easily it could be
+made into an indoor unit, with what we have done so far. There has been some
+announcements about when Schools are going to start again this year. 
+
+A fried, who is a principal at a Primary School in South Australia, ran a
+project last year using a CO2 sensor to monitor air quality, so the students
+could tell when more fresh air and ventilation was required. Their project has
+been featured on the ABC and a video of their efforts is available here: [[https://www.facebook.com/LobethalLutheranSchool/videos/296081939214976][ABC
+Report]]
+
+The initial design of an enclosure separated out the sensors and added a small
+fan for drawing air across them. There was also room for an internal battery
+(LiPo) as well as a USB attached secondary battery, or charging cable.
+
+[[file:../images/20220119_211350.jpg]]
+
+A 3D model was drawn up in [[https://www.tinkercad.com/][TinkerCAD]]...
+
+[[file:../images/20220119_215725.png]]
+
+... printed.
+
+[[file:../images/20220119_090952.jpg]]
+
+Then it was a /simple/ manner of putting all the electronics inside the enclosure.
+
+[[file:../images/20220119_090749.jpg]]
+
+[[file:../images/20220119_094341.jpg]]
+
+Mistakes were found, and noted for correcting in the next iteration.
+
+[[file:../images/20220119_095812.jpg]]
+
+This unit is connected to power again (no battery yet), and is continuing to
+report data, via The Things Network, NodeRED and InfluxDB to the Grafana
+dashboard mentioned previously.
