@@ -1,7 +1,7 @@
 [[../README.org][Top]] | [[index.org][Index]]
 -----
 * Progress Report - Saturday, 30 September 2021                  :TOC:
-  - [[#introduction--summary][Introduction / Summary]]
+- [[#introduction--summary][Introduction / Summary]]
 - [[#progress][Progress]]
   - [[#prototypes--deployed-devices][Prototypes & Deployed Devices]]
   - [[#hardware][Hardware]]
@@ -10,7 +10,7 @@
   - [[#what-else-to-do][What else to do...]]
   - [[#for-future-versions][For future versions]]
 
-** Introduction / Summary
+* Introduction / Summary
 
 Welcome to the first progress report for 2022 and the seventh for the project.
 
