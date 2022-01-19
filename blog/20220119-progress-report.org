@@ -21,7 +21,7 @@ efforts is available here: [[https://www.facebook.com/LobethalLutheranSchool/vid
 
 The PAE IoT - Sensor One, Air Quality Sensor in able do the same things as the
 Primary School's sensor (it uses the same sensor device) but it can also then
-report the data in real time using the LoRaWAN radio network and The Things
+[[sensor-one-2-20220111.png][report the data]] in real time using the LoRaWAN radio network and The Things
 Stack.
 
 Our initial design of an indoors enclosure separated out the sensors and added a
