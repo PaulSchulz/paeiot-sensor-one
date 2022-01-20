@@ -2,6 +2,7 @@
 -----
 * Progress Report - Wednesday, 19 January 2022                            :TOC:
 - [[#summary][Summary]]
+- [[#update-details][Update Details]]
 
 * Summary
 
@@ -22,8 +23,10 @@ efforts is available here: [[https://www.facebook.com/LobethalLutheranSchool/vid
 The PAE IoT - Sensor One, Air Quality Sensor in able do the same things as the
 Primary School's sensor as it uses the same sensor device. With the addition of
 a Raspberry Pi Computer, connected to your network and running free and open
-source software, you can also [[file:../images/sensor-one-2-20220111.png][report the data]] in real time using the LoRaWAN
+source software, you can also [[file:../images/sensor-one-2-20220111.png][see the data]] in real time using the LoRaWAN
 radio network and The Things Stack.
+
+* Update Details
 
 Our initial design of an indoors enclosure separated out the sensors and added a
 small fan for drawing air. There was also room for an internal battery (LiPo) as

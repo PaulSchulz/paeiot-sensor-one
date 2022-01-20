@@ -11,7 +11,13 @@ group. The groups github repository can be found at [[https://github.com/PaulSch
 
 Comments are most welcome. See the above link for the group details.
 
+#+CAPTION: Sensor One in a 3D Printed Indoor Enclosure
+[[file:images/20220119_094341.jpg]]
+
+#+CAPTION: Outdoors Temperature and Humidity Sensor
 [[file:images/20211111_142550.jpg]]
+
+#+CAPTION: Data from Sensor One Outdoors Temperature and Humidity Sensor
 [[file:images/20210805_121239.jpg]]
 
 ** Aim
