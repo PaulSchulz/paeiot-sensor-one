@@ -9,6 +9,7 @@ PAE IoT LoRaWAN Sensor Module
 This project is a product of the Port Adelaide Enfield Libraries IoT Experimenters
 group. The groups github repository can be found at [[https://github.com/PaulSchulz/paeiot-experimenters]] 
 
+The latest details can be found in the regular [[blog/index.org][status updates]].
 Comments are most welcome. See the above link for the group details.
 
 #+CAPTION: Sensor One in a 3D Printed Indoor Enclosure
