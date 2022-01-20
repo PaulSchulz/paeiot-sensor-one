@@ -2,14 +2,15 @@
   - [[#introduction][Introduction]]
   - [[#aim][Aim]]
   - [[#whats-in-this-repository][What's in this Repository]]
+  - [[#usage-license][Usage License]]
 
 ** Introduction
 PAE IoT LoRaWAN Sensor Module
 
-This project is a product of the Port Adelaide Enfield Libraries IoT Experimenters
-group. The groups github repository can be found at [[https://github.com/PaulSchulz/paeiot-experimenters]] 
+This project is a product of the [[https://github.com/PaulSchulz/paeiot-experimenters][Port Adelaide Enfield Libraries IoT Experimenters]]
+group.
 
-The latest details can be found in the regular [[blog/index.org][status updates]].
+The latest details for this project can be found in the regular [[blog/index.org][status updates]].
 Comments are most welcome. See the above link for the group details.
 
 #+CAPTION: Sensor One in a 3D Printed Indoor Enclosure
@@ -33,9 +34,20 @@ data logging via the LoRaWAN network.
 
 ** What's in this Repository
 Subdirectories:
-- Arduino - Directory containing Arduino sketches used by the project.
+- [[Arduino/][Arduino]] - Directory containing Arduino sketches used by the project.
 - [[doc/index.org][doc]] - Design and development documentation
 - [[blog/index.org][blog]] - Progress Reports and Updates
-- images - Pictures, diagrams etc.
-- stl - Sources for 3D printed parts
-- fritzing - Sources for the Wiring Diagram, Printed Circuit Board (PCB) layout and production details, using the Friting application.
+- [[images/][images]]- Pictures, diagrams etc.
+- [[stl/][stl]] - Sources for 3D printed parts
+- [[fritzing/][fritzing]] - Sources for the Wiring Diagram, Printed Circuit Board (PCB) layout
+  and production details, using the Friting application (old).
+- [[kicad/][KiCAD]] - Sources for Wiring Diagram, Printed Circuit Board (PCB) layout
+  and production details, using the KiCAD.
+
+** Usage License
+
+Unless mentioned elseware and where appropriate, all sources are made available
+under a Free and Open Source License (GPLv3) for use for any purpose provided
+that all derived works are made available under a Free and Open Source License.
+
+See [[LICENSE]] for details.
