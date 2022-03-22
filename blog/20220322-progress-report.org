@@ -1,0 +1,95 @@
+[[../README.org][Top]] | [[index.org][Index]]
+-----
+* Progress Report - Saturday, 30 September 2022                          :TOC:
+- [[#introduction--summary][Introduction / Summary]]
+- [[#progress][Progress]]
+  - [[#comments-on-coding-with-arduino-ides][Comments on Coding with Arduino IDEs]]
+  - [[#investigating-the-cjmcu-8128-sensor-board][Investigating the CJMCU-8128 Sensor Board]]
+  - [[#programming][Programming]]
+
+* Introduction / Summary
+
+|--------------+-------------------+---------+------------------------------------------------|
+| Device       | Location / Role   | Status  | Comment                                        |
+|--------------+-------------------+---------+------------------------------------------------|
+| sally        | super-chook-house | WORKING | Stopped working due to faulty battery          |
+| sensor-one-1 | lab               | TESTING |                                                |
+| sensor-one-2 | kitchen           | WORKING | Was used to diagnose issues with other sensors |
+| sensor-one-3 | bees              | BROKEN  | Broken and requires maintenance                |
+| sensor-one-4 | lab / tracker     | BROKEN  | Requires software update to improve operation  |
+|--------------+-------------------+---------+------------------------------------------------|
+
+A quick update for March. Almost all of the sensors stopped working in one way or
+another during this last period.
+
+* Progress 
+** Comments on Coding with Arduino IDEs
+The following comments relate to using the various Arduino IDE's on Ubuntu 21.10. 
+
+*** Arduino IDE v2
+
+I decided to give the new (beta) Arduino development environment a go. It was a
+very frustration experienced. It promises a lot with a new look and feel and
+better library management, but it fell down with the management of the USB
+programming and serial interface.
+
+It would regularly, and without any obvious cause, stop being able to access the
+device. Auto detection appeared to work well, but it than would not correctly
+connect, or be able to program again after the Arduino MKR board was reset.
+
+*** Arduino Cloud IDE
+
+The Arduino Cloud IDE (browser based) works very well. An agent program needs to
+be downloaded and run to allow it to access the USB ports for programming and
+serial monitoring.
+
+The library management is even extensive as all available online libraries are
+available directly from within the tool. 
+
+Compiling is done in the cloud, and the result is then downloaded to the
+attached Arduino device, which was detected automatically.
+
+The biggest issue I found was that there is a limit on the amount of compile
+time is available (200 sec per day) under the free account level. It didn't take
+very long to hit this limit.
+
+*** Arduino IDE v1
+
+I downloaded and updated to the latest version of the original Arduino IDE, and
+was pleasantly surprised at how well it still worked.
+
+The separate serial monitor can be made as big as required, and works well. 
+
+While it isn't Emacs, it was still the easiest way to develop software for the
+Sensor-One project.
+
+** Investigating the CJMCU-8128 Sensor Board
+
+This board is an I2C sensor board which combines three sensor chips. 
+
+There was some confusion when wiring up the board, which was originally
+connected directly to the I2C socket on the MKR board, which provides 5V rather
+then 3.3V. This may have damaged the sensors, and the MKR board did not actually
+boot in this configuration.
+
+Correctly connecting the sensor to the 3.3V supply allowed the sensor to be read correctly. 
+
+[[file:../images/20220321_112736.jpg]]
+
+[[file:../images/20220321_215017.jpg]]
+
+*** BME280 - Humidity sensor - Bosch
+Datasheet: https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/
+
+*** CCS811 - Air Quality Sensor - AMS
+  Low Power Digital Gas Sensor. Datasheet: https://core-electronics.com.au/attachments/localcontent/CCS811_Datasheet-DS000459_65985a5bff8.pdf
+
+*** HDC1080 - High Accuracy Humidity Sensor - Texas Instruments
+Datasheet: https://www.ti.com/lit/ds/symlink/hdc1080.pdf?ts=1647862179085&ref_url=https%253A%252F%252Fwww.google.com%252F
+
+** Programming
+
+
+
+-----
+
