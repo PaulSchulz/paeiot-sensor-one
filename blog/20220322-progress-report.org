@@ -85,11 +85,45 @@ Datasheet: https://www.bosch-sensortec.com/products/environmental-sensors/humidi
   Low Power Digital Gas Sensor. Datasheet: https://core-electronics.com.au/attachments/localcontent/CCS811_Datasheet-DS000459_65985a5bff8.pdf
 
 *** HDC1080 - High Accuracy Humidity Sensor - Texas Instruments
-Datasheet: https://www.ti.com/lit/ds/symlink/hdc1080.pdf?ts=1647862179085&ref_url=https%253A%252F%252Fwww.google.com%252F
+Datasheet: https://www.ti.com/lit/ds/symlink/hdc1080.pdf
 
 ** Programming
 
+Some more changes have been made to the 'Sensor One' code. Currently, the code
+for the new sensors is still a work in progress, but several structural changes
+have also been made.
 
+The sensors connected to the MKR board can be chosen at compile time, and are
+displayed when the software is run. This allows a working configuration (eg. for
+the DHT sensors) to be put to the side while new code is developed.
+
+#+begin_src 
+# ----------------------------------------------------------------------------
+# --- Sensor One                                                           ---
+# --- Version: v1.3.0  21 Mar 2022                                         ---
+# --- PAE IoT Experimenters                                                ---
+# --- https://stemlibrary.space/iot-experimenters                          ---
+# ----------------------------------------------------------------------------
+# Features
+#   LoRaWAN
+#   CCS811
+#   BME280
+#   HDC1080
+#   CayenneLPP
+# ----------------------------------------------------------------------------
+#+end_src
+
+and is selected in the code with
+
+#+begin_src 
+// Features
+#define LORAWAN            1
+#define SENSOR_DHT         0
+#define SENSOR_CCS811      1
+#define SENSOR_BME280      1
+#define SENSOR_HDC1080     1
+#define FEATURE_CAYENNELPP 1
+#+end_src
 
 -----
 
