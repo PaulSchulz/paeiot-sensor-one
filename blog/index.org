@@ -1,5 +1,5 @@
 
-[[../README.org][TOP]]
+[[../README.org][Top]]
 -----
 * Articles                                                           :TOC:
 - [[#progress-reports][Progress Reports]]
