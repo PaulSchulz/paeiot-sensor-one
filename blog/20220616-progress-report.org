@@ -36,7 +36,7 @@ particular order:
 
 Other useful activities:
 - Robustness testing of sensors;
-. Data modeling and analysis;
+- Data modeling and analysis;
 - Review of our IoT stack - The Things Network, NodeRED, InfluxDB and Grafana;
 - NodeRED Flow Implementation;
 - Grafana Dashboard Design;
