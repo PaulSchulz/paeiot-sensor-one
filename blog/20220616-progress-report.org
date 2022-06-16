@@ -1,9 +1,9 @@
 [[../README.org][Top]] | [[index.org][Index]]
 -----
 
-* Microclimate - *From the Coast to the Foothills
+* Microclimates - From the Coast to the Foothills
 
-[[file:./images/20220610_172212.jpg]]
+[[file:../images/20220610_172212.jpg]]
 
 ** Progress Report - Thursday, 16 June 2022
 
