@@ -3,8 +3,12 @@
 
 * Microclimates - From the Coast to the Foothills
 
-#+CAPTION: Experimental setup of solar powered climate sensor. 
 [[file:../images/20220610_172212.jpg]]
+
+Experimental setup of solar powered climate sensor stack. From the top - USB
+solar panel; air temperature and humidity sensor in weather shield;
+weather-proof box containing microprocessor board with LoRaWAN radio and
+antenna.
 
 ** Progress Report - Thursday, 16 June 2022
 
