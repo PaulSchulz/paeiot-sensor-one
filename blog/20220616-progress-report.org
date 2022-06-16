@@ -1,0 +1,51 @@
+[[../README.org][Top]] | [[index.org][Index]]
+-----
+
+* Microclimate - *From the Coast to the Foothills
+
+[[file:./images/20220610_172212.jpg]]
+
+** Progress Report - Thursday, 16 June 2022
+
+Welcome to this (somewhat infrequent) update for the Sensor One IoT
+project.
+
+We have some big news.
+
+Robert has been successful in obtaining a grant from National Science Week 2022
+SA Community Grant for a microclimate measuring project in Port Adelaide Enfield
+council - *From the coast to the foothills*
+
+The sensors for the project will make use of the PAE IoT Experimenter's Group
+Sensor One. While this is exciting, what is even better news is that we want to
+use this opportunity to make the kit, with emphasis on a complete outdoor
+environmental sensor package. The time frame for this is limited (about 4 months
+in total), so the IoT Experimenter group is looking for people who may be able
+to help out in many different ways.
+
+The initial project kickoff meeting is being held during our regular meetup,
+this Sunday, 19th June 2022, at 3pm at the Greenacres Library.
+
+Some of the additional hardware features that can be looked at, in no
+particular order:
+- Adding a magnetic reset switch + circuit, for external sensor reset;
+- Power usage measurement, and enabling microprocessor sleep modes;
+- Add a watchdog circuit and automatic reset;
+- Add power monitoring circuit (battery and power in); and
+- Creating a version 2 of sensor circuit board.
+
+Other useful activities:
+- Robustness testing of sensors;
+. Data modeling and analysis;
+- Review of our IoT stack - The Things Network, NodeRED, InfluxDB and Grafana;
+- NodeRED Flow Implementation;
+- Grafana Dashboard Design;
+- Documentation of hardware (bill of materials and build instructions), and
+  project (blog and progress reports), including photography; and
+- Design and preparation of 3D printed parts (if any).
+
+*** More Information
+- The project: https://stemlibrary.space/microclimates/
+- An overview of the IoT: https://stemlibrary.space/iot-microclimate/
+- An overview of the sensors we will be developing and deploying:
+  https://stemlibrary.space/microclimate-sensor/
