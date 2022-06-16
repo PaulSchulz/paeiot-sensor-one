@@ -3,6 +3,7 @@
 
 * Microclimates - From the Coast to the Foothills
 
+#+CAPTION: Experimental setup of solar powered climate sensor. 
 [[file:../images/20220610_172212.jpg]]
 
 ** Progress Report - Thursday, 16 June 2022
