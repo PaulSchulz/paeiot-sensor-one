@@ -1,0 +1,144 @@
+[[../README.org][Top]] | [[index.org][Index]]
+-----
+
+Microclimates - From the Coast to the Foothills
+
+* Introduction
+
+The following are the procedure that is being used to setup and test the LoRaWAN
+sensor hardware and ensure that they are working correctly with the LoRaWAN network.
+
+It is planned setup all of the available sensor boards at the upcoming group
+workshop on *Sun, 17 July 2022*. If device configuration details can be shared
+(specifically the DevEUI), it should be possible to split the tasks across
+several workstations/laptops.
+
+These procedures don't include details of the final software as this is still
+under development. The code can be found, in what ever state, in the 'src'
+directory of this GitHub repository.
+
+For all MKRWAN1310 boards we need to:
+
+- Upgrade Firmware to ARD-078 1.2.3
+- Record each board's DevEUI identifier
+- Register all the boards with The Things Network
+- Test that each board can make a LoRaWAN connection and transmit data
+
+and optionally, if time permits, the following can also be done. Details will
+not be covered here, but this will allow additional development to continue with
+confidence.
+
+- Install the 'paeiot-sensor-one' sketch
+- Test data transmission with a connected sensor 
+
+* Update the Firmware - MKRWANFWUpdate_standalone
+
+** Requirements
+
+- Laptop with Arduino Development Environment;
+- Arduino MKRWAN Library (Not Version 2); and
+- Arduino MKRWAN1310 board connected via USB Cable 
+
+** Procedure
+From the Library example code, load the 'MKRWANFWUpdate_standalone' sketch 
+onto the MKRWAN1310 board to update the firmware.
+
+Note: Once this sketch is loaded, it will reflash the firmware everytime the
+MKRWAN1310 board is booted. It is best to upload another sketch as soon as
+possible.
+
+* Bring up - LoRaWAN - FirstConfiguration_AU915 (Step 1)
+
+** Requirements
+- Laptop with Arduino Development Environment;
+- Arduino MKRWAN Library (Not Version 2);
+- Arduino MKRWAN1310 board connected via USB Cable; and
+- USB Stick or Shared Network Document (Google Doc)
+
+** Procedure
+1. Ensure that there is an antenna plugged into the MKRWAN1310.
+2. Use the 'FirstConfiguration_AU915' sketch from the the 'paeiot-sensor-one'
+   repository.
+
+  If not available, it is possible to use the 'FirstConfiguration' sketch from
+  the MKRWAN Arduino libray with some modificatins:
+
+  - Change the 'modem.begin()' to use the AU915frequency plan, eg.
+    'modem.begin(AU915)'.
+
+  - Change the frequency channels in use by adding the following line, just
+    before calling 'modem.setADR(true)';
+ 
+    modem.sendMask("ff000000f000ffff00020000");
+
+3. Install and run the sketch and record the Device EUI so that the device can
+   be registered with "The Things Network".
+
+   Store the DevEUI so that is can be accessed in the next two steps (eg. on a
+   USB Stick or a shared network document).
+
+   eg. mc-1  a8610a3334236c14f
+
+* Register the Device with The Things Network
+
+** Requirements
+
+- Login the The Things Network, with administration privileges on the
+  'enfieldlibrary-trial-v3' application
+- *AppEUI* and *AppKey* details for the PAEIoT The Things Network Application
+- *DevEUI* details from the previous step
+
+** Procedure
+
+Login to The Things Network, go to the 'enfieldlibrary-trial-v3' applications.
+
+Register the device. The MKRWAN1310 board has been pre-registered with The Thing
+Network for the Australian LoRaWAN Frequency plan for almost all of the required
+settings (see step 3. below).
+
+Login -> Applications -> Register end Device
+  1. Brand: Arduino SA
+     Model: Arduino MKR WAN 1310 
+     Hardware Version: 1.0
+     Firmware Version: 1.2.3
+     Profile (Region): AU_915_928
+
+  2. Enter registration data
+     Frequency Plan: Australia 915-928 MHx, FSB 2 (used by TTN)
+     AppEUI (copy from Application EUI)
+     DevEUI (copy from recorded value)
+     AppKey (copy from Application EUI)
+     End device ID: mc-* (depending on device number, mc-1, mc-2 etc.)
+
+Then
+
+  3. Change LoRaWAN Regional Parameters version
+     End Devices -> mc-* -> General settings
+     Network layer
+     Regional Parameters version: RP001 Regional Parameters 1.0.2 revision B 
+     Save Settings
+
+* Bring up - LoRaWAN - FirstConfiguration_AU915 (Step 2)
+
+** Requirements
+
+- Laptop with Arduino Development Environment;
+- Arduino MKRWAN Library (Not Version 2);
+- Arduino MKRWAN1310 board connected via USB Cable; and
+- AppEUI and AppKey details for the PAEIoT The Things Network Application
+
+** Procedure
+
+1. Ensure that there is an antenna plugged into the MKRWAN1310.
+2. Confirm that that you have the AppEUI and AppKey details
+3. With the Serial monitor active on the Arduino Developent Tool
+
+   - Select connection method: 1 (OTAA)
+   - Enter your APP EUI
+   - Enter your APP KEY
+
+The MKRWAN 1310 should then try to connect with the LoRaWAN network. If
+successful you will see the following message:
+
+  Message sent correctly!
+
