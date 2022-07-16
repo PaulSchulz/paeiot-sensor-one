@@ -9,16 +9,27 @@
   License: GNU Public License v3.0
 */
 
-// Features
-#define LORAWAN            1
-#define SENSOR_DHT         0
-#define SENSOR_CCS811      1
-#define SENSOR_BME280      1
-#define SENSOR_HDC1080     1
-#define FEATURE_CAYENNELPP 1
+#define BUILD "v1.3.1  16 Jul 2022                                     "
+
+// TODO Fix capability code so that types of sensors can be
+// easily switched in or out.
+
+#define TRUE 1
+#define FALSE 0
+
+// Capabilities
+#define FEATURE_SERIAL TRUE
+#define LORAWAN        TRUE
+#define SENSOR_STATUS  TRUE
+#define SENSOR_DHT     TRUE
+#define SENSOR_CCS811  FALSE
+#define SENSOR_BME280  FALSE
+#define SENSOR_CSD30   TRUE
+
+#define FEATURE_WATCHDOG TRUE
+#define FEATURE_RTC      TRUE
 
 #include <Wire.h>
-
 //////////////////////////////////////////////////////////////////////////////
 // MKRWAN Library
 // LoRaWAN code is based on mkrwan1310-example
@@ -32,8 +43,18 @@ String appKey = SECRET_APP_KEY;
 //////////////////////////////////////////////////////////////////////////////
 // CayenneLPP Library
 // Low Power Payload format
-#include <CayenneLPP.h>
+#include<CayenneLPP.h>
 CayenneLPP lpp(51);
+
+//////////////////////////////////////////////////////////////////////////////
+// Status Message
+void status_setup() {
+
+}
+
+void status_loop() {
+
+}
 
 //////////////////////////////////////////////////////////////////////////////
 // Adafruit_CCS811 Library
@@ -47,28 +68,23 @@ Adafruit_CCS811 ccs;
 #define BME280_ADDR 0x76
 BME280 myBME280;
 
-//
-#include <ClosedCube_HDC1080.h>
-ClosedCube_HDC1080 myHDC1080;
-//////////////////////////////////////////////////////////////////////////////
-#define NOT_A_TEMPERATURE -99.9
-#define NOT_A_HUMIDITY    -1.0
-#define DELAY             60000
-
 //////////////////////////////////////////////////////////////////////////////
 // DHT Sensor code is based on sensor-am2302-example
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
 #include <DHT_U.h>
 
-// Type of sensor in use:
-#define DHTTYPE    DHT22     // DHT 22 (AM2302)
-
 // Four Temperature/Humidity sensors are supported
 #define DHTPIN1 2 // Digital pin connected to the DHT sensor 1
 #define DHTPIN2 3 // Digital pin connected to the DHT sensor 2
 #define DHTPIN3 4 // Digital pin connected to the DHT sensor 3
 #define DHTPIN4 5 // Digital pin connected to the DHT sensor 4
+
+#define NOT_A_TEMPERATURE -99.9
+#define NOT_A_HUMIDITY    -1.0
+#define DELAY             60000
+// Type of sensor in use:
+#define DHTTYPE    DHT22     // DHT22 (AM2302)
 
 // Declare sensors
 DHT_Unified dht1(DHTPIN1, DHTTYPE);
@@ -80,6 +96,63 @@ uint32_t delayMS = DELAY;
 uint32_t minDelayMS;
 
 ////////////////////////////////////////////////////////////////////////////// 
+// Sensor CSD30 - C02, Temperatue and Humidity
+#if SENSOR_CSD30
+int csd30_ntemp=10;
+float csd30_temp=20.2;
+
+void csd30_setup() {
+  Serial.println(F("------------------------------------------------------------------------------"));
+  Serial.println(F("CSD30 - CO2, Temperature and Humidity Sensor"));
+  Serial.print(F("  CayenneLPP Id: "));
+  Serial.println(csd30_ntemp);
+}
+
+void csd30_loop() {
+  lpp.addTemperature(csd30_ntemp, csd30_temp);
+}
+#endif
+
+////////////////////////////////////////////////////////////////////////////// 
+// Feature
+// https://github.com/adafruit/Adafruit_SleepyDog
+#if FEATURE_WATCHDOG
+#include <Adafruit_SleepyDog.h>
+#define FEATURE_WATCHDOG_TEST FALSE
+
+int watchdog_timer=30000; // 30 second watchdog
+
+void watchdog_setup() {
+  Serial.println(F("----------------------------------------------------------------------------"));
+  Serial.println(F("Watchdog"));
+  Serial.print(F("  Timer: "));
+  Serial.print(watchdog_timer/1000);
+  Serial.println(F("s"));
+  //Publish reason for restart (power, FEATURE_WATCHDOG etc)
+  Serial.print("  Reset Reason code: ");  
+  Serial.println(PM->RCAUSE.reg);
+
+  Watchdog.enable(watchdog_timer);
+}
+
+void watchdog_loop() {
+  Watchdog.reset();  // Kick watchdog
+
+  Serial.print(".");
+
+  #if FEATURE_WATCHDOG_TEST
+  // trip the watchdog after 2 succesful loops
+  if (millis() > 2*rtc_delay*60*1000) {
+    delay(30*1000);  // this is longer than the watchdog trigger
+  };
+  #endif
+}
+
+#endif
+
+////////////////////////////////////////////////////////////////////////////// 
+// Utility Functions
+
 char* format_temperature(char * buff, int buffn, float temperature){
   float ctemp = NOT_A_TEMPERATURE;
   if (temperature == ctemp){
@@ -132,49 +205,37 @@ void setup() {
   digitalWrite(LED_BUILTIN, HIGH);
   delay(8000); // Allow serial monitor to catch up.
   digitalWrite(LED_BUILTIN, LOW);
-  Serial.println(F("# ----------------------------------------------------------------------------"));
-  Serial.println(F("# --- Sensor One                                                           ---"));
-  Serial.println(F("# --- Version: v1.3.0  21 Mar 2022                                         ---"));
-  Serial.println(F("# --- PAE IoT Experimenters                                                ---"));
-  Serial.println(F("# --- https://stemlibrary.space/iot-experimenters                          ---"));
-  Serial.println(F("# ----------------------------------------------------------------------------"));
-  Serial.println(F("# Features"));
-  #if LORAWAN
-  Serial.println(F("#   LoRaWAN"));
-  #endif
-  #if SENSOR_HDT
-  Serial.println(F("#   DHTXX"));
-  #endif
-  #if SENSOR_CCS811
-  Serial.println(F("#   CCS811"));  
-  #endif
-  #if SENSOR_BME280
-  Serial.println(F("#   BME280"));
-  #endif
-  #if SENSOR_HDC1080
-  Serial.println(F("#   HDC1080"));
-  #endif
-  #if FEATURE_CAYENNELPP
-  Serial.println(F("#   CayenneLPP"));
-  #endif
-  Serial.println(F("# ----------------------------------------------------------------------------"));
+
+  Serial.println(F("------------------------------------------------------------------------------"));
+  Serial.println(F("---    __  __ _                _ _            _                            ---"));    
+  Serial.println(F("---   |  \\/  (_)__ _ _ ___  __| (_)_ __  __ _| |_ ___ ___                  ---"));
+  Serial.println(F("---   | |\\/| | / _| '_/ _ \\/ _| | | '  \\/ _` |  _/ -_|_-<                  ---"));
+  Serial.println(F("---   |_|  |_|_\\__|_| \\___/\\__|_|_|_|_|_\\__,_|\\__\\___/__/                  ---"));                     
+  Serial.println(F("---                                                                        ---"));
+  Serial.println(F("---   Sensor One                                                           ---"));  
+  Serial.print("---   Build: ");
+  Serial.print(BUILD);
+  Serial.println(F("      ---"));
+  Serial.println(F("---   PAE IoT Experimenters                                                ---"));
+  Serial.println(F("---   https://stemlibrary.space/iot-experimenters                          ---"));
+  Serial.println(F("------------------------------------------------------------------------------"));
   
   // Setup LoRaWAN Modem
-  Serial.println("# LoRaWAN - Radio");
-  Serial.println("#   Modem: Australian Band Plan AU915 ");
+  Serial.println("LoRaWAN - Radio");
+  Serial.println("  Modem: Australian Band Plan AU915 ");
   // change this to your regional band (eg. US915, AS923, ...)
   if (!modem.begin(AU915)) {
     Serial.println("  Failed to start module");
     while (1) {}
   };
   modem.sendMask("ff000000f000ffff00020000");
-  Serial.print("#   Module version is: ");
+  Serial.print("  Module version is: ");
   Serial.println(modem.version());
-  Serial.print("#   DevEUI is: ");
+  Serial.print("  DevEUI is: ");
   Serial.println(modem.deviceEUI());
-  Serial.print("#   AppEUI is: ");
+  Serial.print("  AppEUI is: ");
   Serial.println(SECRET_APP_EUI);
-  Serial.print("#   AppKey is: ");
+  Serial.print("  AppKey is: ");
   Serial.println(SECRET_APP_KEY);
     
   int connected = modem.joinOTAA(appEui, appKey);
@@ -193,42 +254,37 @@ void setup() {
 
   // Setup Sensors
   // Initialize device.
-
   #if SENSOR_DHT
-  Serial.println(F("# ----------------------------------------------------------------------------"));
-  Serial.println(F("# DHTxx Unified Sensors - Temperature and Humidity"));
-
   dht1.begin();
   dht2.begin();
   dht3.begin();
   dht4.begin();
 
-  // Print sensor details.
+  // Print sensor details
   sensor_t sensor;
-  Serial.print(F("#   Sensor 1: "));
+  Serial.println(F("------------------------------------------------------------------------------"));
+  Serial.println(F("DHTxx Unified Sensors - Temperature and Humidity"));
+  Serial.print(F("  Sensor 1: "));
   dht1.temperature().getSensor(&sensor);
   Serial.println(sensor.name);
     
-  Serial.print(F("#   Sensor 2: "));
+  Serial.print(F("  Sensor 2: "));
   dht2.temperature().getSensor(&sensor);
   Serial.println(sensor.name);
     
-  Serial.print(F("#   Sensor 3: "));
+  Serial.print(F("  Sensor 3: "));
   dht3.temperature().getSensor(&sensor);
   Serial.println(sensor.name);
     
-  Serial.print(F("#   Sensor 4: "));
+  Serial.print(F("  Sensor 4: "));
   dht4.temperature().getSensor(&sensor);
   Serial.println(sensor.name);
+  #endif  
 
-  minDelayMS = sensor.min_delay / 1000;
-  Serial.print  (F("#   Minimum sensor Delay(ms): ")); Serial.println(minDelayMS);
-  Serial.print  (F("#   Transmit Delay(m):        ")); Serial.println(delayMS / 60000.0);
 
-  #endif // SENSOR_DHT
-    
-  Serial.println(F("# ----------------------------------------------------------------------------"));
-  Serial.print("# CCS811 - C02 and Volatile Organic Compounds");
+  #if SENSOR_CCS811  
+  Serial.println(F("------------------------------------------------------------------------------"));
+  Serial.print("CCS811 - C02 and Volatile Organic Compounds");
 
   if(!ccs.begin()){
     Serial.println(" Failed to start sensor! Please check your wiring.");
@@ -239,15 +295,18 @@ void setup() {
   // Wait for the sensor to be ready
   while(!ccs.available());
   Serial.println(" - Ready");
-
-  Serial.println(F("# ----------------------------------------------------------------------------"));
-  Serial.println("# BME280 - Temperature, Pressure and Humidity Sensor");
+  #endif
+  
+  
+  #if SENSOR_BME280
+  Serial.println(F("------------------------------------------------------------------------------"));
+  Serial.println("BME280 -Temperature, Pressure and Humidity");
   //For I2C, enable the following and disable the SPI section
   myBME280.settings.commInterface = I2C_MODE;
   myBME280.settings.I2CAddress = 0x76; //BME280_ADDR
   delay(10);
   //Initialize BME280
-  myBME280.settings.runMode = 3; // Normal mode
+  myBME280.settings.runMode = 3; //Normal mode
   myBME280.settings.tStandby = 0;
   myBME280.settings.filter = 4;
   myBME280.settings.tempOverSample = 5;
@@ -255,26 +314,36 @@ void setup() {
   myBME280.settings.humidOverSample = 5;
   delay(10); 
   myBME280.begin();
+  #endif
 
-  Serial.println(F("# ----------------------------------------------------------------------------"));
-  Serial.println("# HDC1080 - Humidity and Temperature Sensor");  
-  myHDC1080.begin(0x40);
-  
-  Serial.println(F("# ----------------------------------------------------------------------------"));
+  #if SENSOR_CSD30
+  csd30_setup();
+  #endif
 
+  #if FEATURE_WATCHDOG
+  watchdog_setup();
+  #endif
+
+  Serial.println(F("------------------------------------------------------------------------------"));
+  Serial.println(F("Features"));
+  Serial.println(F("  CayenneLPP "));
+  // minDelayMS = sensor.min_delay / 1000;
+  // Serial.print  (F("  Minimum sensor Delay(ms): ")); Serial.println(minDelayMS);
+  Serial.print  (F("  Transmit Delay(m):        ")); Serial.println(delayMS / 60000.0);
+
+  Serial.println(F("------------------------------------------------------------------------------"));
   
 } // End of setup
 
+//////////////////////////////////////////////////////////////////////////////
 void loop() {
-  
-  #if SENSOR_DHT
   // DHT Sensors
   // Get sensor data
   float t1,t2,t3,t4;
   float h1,h2,h3,h4;
   sensors_event_t event;
 
-  // Sensor 1
+  // Sensor1
   dht1.temperature().getEvent(&event);
   if (isnan(event.temperature)) {
     t1 = NOT_A_TEMPERATURE;
@@ -282,6 +351,8 @@ void loop() {
     t1 = event.temperature;
   }
 
+  t1 = 20.1;
+  
   dht1.humidity().getEvent(&event);
   if (isnan(event.relative_humidity)) {
     h1 = NOT_A_HUMIDITY;
@@ -355,8 +426,8 @@ void loop() {
           format_humidity(hbuff4, sizeof(hbuff4), h4)
           );
   Serial.print(buff);
-  #endif // SENSOR_DHT
 
+  #if SENSOR_CSS811
   // CCS811 Sensor
   if(ccs.available()){
     if(!ccs.readData()){
@@ -364,19 +435,17 @@ void loop() {
       Serial.print(ccs.geteCO2());
       Serial.print(" ");
       Serial.print(ccs.getTVOC());
-      Serial.print(" ");
-      Serial.print(ccs.calculateTemperature());
       Serial.print("]");
     } else {
       Serial.println("ERROR!");
       while(1);
    }
   }
+  #endif
 
+  #if SENSOR_BME280
   //Returns temperature
     Serial.print("[");
-    Serial.print(myBME280.readTempC(), 2);
-    Serial.print(" ");  
     Serial.print(myBME280.readTempC(), 2);
     Serial.print(" C]");
     //Returns pressure
@@ -386,38 +455,26 @@ void loop() {
     Serial.print("[");
     Serial.print(myBME280.readFloatHumidity(), 0);
     Serial.print(" %RH]");
-
-  
-    Serial.print(" T[");
-    Serial.print(myHDC1080.readTemperature());
-    Serial.print(" C]");
-    Serial.print(" RH[");
-    Serial.print(myHDC1080.readHumidity());
-    Serial.print(" %]");
-
+  #endif
+   
   // LPP Message
   lpp.reset();
-
-  #if SENSOR_DHT
   lpp.addTemperature(0, t1);
   lpp.addRelativeHumidity(1, h1);
-  #endif  // SENSOR_DHT
 
-  // Preread
-  ccs.geteCO2();
-  ccs.getTVOC();
-  
+  #if SENSOR_CSS811
   lpp.addConcentration(8, ccs.geteCO2());
   lpp.addConcentration(9, ccs.getTVOC());
+  #endif
 
   // Build LoRaWAN message
-  // char msg[100];
-  // snprintf(msg, sizeof(msg),
-  //            "%4.1f %5.1f %4.1f %5.1f %4.1f %5.1f %4.1f %5.1f",
-  //           t1,h1,
-  //            t2,h2,
-  //            t3,h3,
-  //            t4,h4);
+  char msg[100];
+  snprintf(msg, sizeof(msg),
+             "%4.1f %5.1f %4.1f %5.1f %4.1f %5.1f %4.1f %5.1f",
+             t1,h1,
+             t2,h2,
+             t3,h3,
+             t4,h4);
 
     // String msg = "T: "+buff+"H: T2: H2:";
     //Serial.print("Sending Message: "); Serial.print(msg);
@@ -441,7 +498,7 @@ void loop() {
         Serial.println(" [rx]");
 
         char rcv[64];
-        int i = 0;
+        unsigned int i = 0;
         while (modem.available()) {
             rcv[i++] = (char)modem.read();
         }
@@ -457,6 +514,15 @@ void loop() {
 
     digitalWrite(LED_BUILTIN, LOW);
 
-    Serial.println(" [delay]");
-    delay(delayMS);
+  Serial.print(" [delay]");
+
+  for(int i=0; i<10; i++){
+    #if FEATURE_WATCHDOG
+    watchdog_loop();
+    #endif
+
+    delay(delayMS/10);
+  }
+  Serial.println();
+
 }
