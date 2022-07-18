@@ -9,7 +9,7 @@
   License: GNU Public License v3.0
 */
 
-#define BUILD "v1.3.1  16 Jul 2022                                     "
+#define BUILD "v1.3.3rc1  16 Jul 2022                                  "
 
 // TODO Fix capability code so that types of sensors can be
 // easily switched in or out.
@@ -26,8 +26,9 @@
 #define SENSOR_BME280  FALSE
 #define SENSOR_CSD30   TRUE
 
-#define FEATURE_WATCHDOG TRUE
-#define FEATURE_RTC      TRUE
+#define FEATURE_RTC           FALSE
+#define FEATURE_WATCHDOG      TRUE
+#define FEATURE_POWER_MONITOR TRUE
 
 #include <Wire.h>
 //////////////////////////////////////////////////////////////////////////////
@@ -71,6 +72,8 @@ BME280 myBME280;
 //////////////////////////////////////////////////////////////////////////////
 // DHT Sensor code is based on sensor-am2302-example
 #include <Adafruit_Sensor.h>
+
+#if SENSOR_DHT
 #include <DHT.h>
 #include <DHT_U.h>
 
@@ -95,6 +98,138 @@ DHT_Unified dht4(DHTPIN4, DHTTYPE);
 uint32_t delayMS = DELAY;
 uint32_t minDelayMS;
 
+void dht_setup() {
+  dht1.begin();
+  dht2.begin();
+  dht3.begin();
+  dht4.begin();
+
+  // Print sensor details
+  sensor_t sensor;
+  Serial.println(F("------------------------------------------------------------------------------"));
+  Serial.println(F("DHTxx Unified Sensors - Temperature and Humidity"));
+  Serial.print(F("  Sensor 1: "));
+  dht1.temperature().getSensor(&sensor);
+  Serial.println(sensor.name);
+    
+  Serial.print(F("  Sensor 2: "));
+  dht2.temperature().getSensor(&sensor);
+  Serial.println(sensor.name);
+    
+  Serial.print(F("  Sensor 3: "));
+  dht3.temperature().getSensor(&sensor);
+  Serial.println(sensor.name);
+    
+  Serial.print(F("  Sensor 4: "));
+  dht4.temperature().getSensor(&sensor);
+  Serial.println(sensor.name);
+}
+
+void dht_loop() {
+  // DHT Sensors
+  // Get sensor data
+  float t1,t2,t3,t4;
+  float h1,h2,h3,h4;
+  sensors_event_t event;
+
+  // Sensor1
+  dht1.temperature().getEvent(&event);
+  if (isnan(event.temperature)) {
+    t1 = NOT_A_TEMPERATURE;
+  } else {
+    t1 = event.temperature;
+  }
+
+  dht1.humidity().getEvent(&event);
+  if (isnan(event.relative_humidity)) {
+    h1 = NOT_A_HUMIDITY;
+  } else {
+    h1 = event.relative_humidity;
+  }
+
+  // Sensor 2
+  dht2.temperature().getEvent(&event);
+  if (isnan(event.temperature)) {
+    t2 = NOT_A_TEMPERATURE;
+  } else {
+    t2 = event.temperature;
+  }
+
+  dht2.humidity().getEvent(&event);
+  if (isnan(event.relative_humidity)) {
+    h2 = NOT_A_HUMIDITY;
+  } else {
+    h2 = event.relative_humidity;
+  }
+
+  // Sensor 3
+  dht3.temperature().getEvent(&event);
+  if (isnan(event.temperature)) {
+    t3 = NOT_A_TEMPERATURE;
+  } else {
+    t3 = event.temperature;
+  }
+
+  dht3.humidity().getEvent(&event);
+  if (isnan(event.relative_humidity)) {
+    h3 = NOT_A_HUMIDITY;
+  } else {
+    h3 = event.relative_humidity;
+  }
+
+  // Sensor 4
+  dht4.temperature().getEvent(&event);
+  if (isnan(event.temperature)) {
+    t4 = NOT_A_TEMPERATURE;
+  } else {
+    t4 = event.temperature;
+  }
+
+  dht4.humidity().getEvent(&event);
+  if (isnan(event.relative_humidity)) {
+    h4 = NOT_A_HUMIDITY;
+  } else {
+    h4 = event.relative_humidity;
+  }
+
+  char buff[100];
+  char tbuff1[8];
+  char tbuff2[8];
+  char tbuff3[8];
+  char tbuff4[8];
+  char hbuff1[8];
+  char hbuff2[8];
+  char hbuff3[8];
+  char hbuff4[8];
+  snprintf(buff, sizeof(buff),
+          "| %s %s %s %s | %s %s %s %s |",
+          format_temperature(tbuff1, sizeof(tbuff1), t1),
+          format_temperature(tbuff2, sizeof(tbuff2), t2),
+          format_temperature(tbuff3, sizeof(tbuff3), t3),
+          format_temperature(tbuff4, sizeof(tbuff4), t4),
+          format_humidity(hbuff1, sizeof(hbuff1), h1),
+          format_humidity(hbuff2, sizeof(hbuff2), h2),
+          format_humidity(hbuff3, sizeof(hbuff3), h3),
+          format_humidity(hbuff4, sizeof(hbuff4), h4)
+          );
+  Serial.print(buff);
+
+  //lpp.addTemperature(0, t1);
+  //lpp.addRelativeHumidity(0, h1);
+  //lpp.addTemperature(1, t2);
+  //lpp.addRelativeHumidity(1, h2);
+  //lpp.addTemperature(2, t3);
+  //lpp.addRelativeHumidity(2, h3);
+  //lpp.addTemperature(3, t4);
+  //lpp.addRelativeHumidity(3, h4);
+  // Testing
+  lpp.addTemperature(0, 20.1);
+  lpp.addRelativeHumidity(1, 0.9);
+
+}
+
+#endif // SENSOR_DHT
+
 ////////////////////////////////////////////////////////////////////////////// 
 // Sensor CSD30 - C02, Temperatue and Humidity
 #if SENSOR_CSD30
@@ -111,10 +246,36 @@ void csd30_setup() {
 void csd30_loop() {
   lpp.addTemperature(csd30_ntemp, csd30_temp);
 }
-#endif
+
+#endif // SENSOR_CSD30
+
+//////////////////////////////////////////////////////////////////////////////
+// Real Time Clock (RTC)
+#if FEATURE_RTC
+void rtc_setup() {
+  // set alarm date in the future to test
+  rtc.setAlarmMonth(12);
+  rtc.setAlarmYear(2022);
+  set_next_alarm(1);
+  rtc.attachInterrupt(alarmMatch);
+  rtc.enableAlarm(rtc.MATCH_HHMMSS);
+  Serial.println(F("----------------------------------------------------------------------------"));
+  print_rtc();
+  Serial.println(F("----------------------------------------------------------------------------"));
+}
+
+void rtc_loop() {
+  if(rtc_matched) { // FEATURE_RTC interupt was fired
+    rtc_matched=0;
+    set_next_alarm(0);
+    print_rtc();
+  }
+}
+
+#endif //FEATURE_RTC
 
 ////////////////////////////////////////////////////////////////////////////// 
-// Feature
+// Watchdog
 // https://github.com/adafruit/Adafruit_SleepyDog
 #if FEATURE_WATCHDOG
 #include <Adafruit_SleepyDog.h>
@@ -149,6 +310,46 @@ void watchdog_loop() {
 }
 
 #endif
+
+////////////////////////////////////////////////////////////////////////////// 
+// Power Monitor
+#if FEATURE_POWER_MONITOR
+
+int powermon_panel_pin   = A0;
+int powermon_battery_pin = A1;
+int powermon_enable_pin  = 0;
+
+void powermon_setup() {
+  Serial.println(F("----------------------------------------------------------------------------"));
+  Serial.println(F("Power Monitor (for Microclimates Sensor)"));
+  Serial.println(F("  Voltage 1: Panel Voltage"));
+  Serial.println(F("  Voltage 2: Battery Voltage"));
+
+  // Enable control for battery voltage reading, and disable.
+  pinMode(powermon_enable_pin, OUTPUT);
+  digitalWrite(powermon_enable_pin, LOW);
+}
+
+void powermon_loop() {
+  int panel_reading   = 0;
+  int battery_reading = 0;
+  float panel_voltage;   // 0.0-1.0 -> 0-22V
+  float battery_voltage; // 0.0-1.0 -> 0-1V
+
+  digitalWrite(powermon_enable_pin, HIGH);
+  delay(100);
+  panel_reading = analogRead(powermon_panel_pin);
+  battery_reading = analogRead(powermon_battery_pin);
+  digitalWrite(powermon_enable_pin, LOW);
+
+  panel_voltage = 22.0*panel_reading/1024;
+  battery_voltage = 1.0*battery_reading/1024;
+
+  lpp.addVoltage(0, panel_voltage); 
+  lpp.addVoltage(1, battery_voltage); 
+}
+
+#endif // FEATURE_POWER_MONITOR
 
 ////////////////////////////////////////////////////////////////////////////// 
 // Utility Functions
@@ -248,39 +449,10 @@ void setup() {
   // Set poll interval to 60 secs.
   modem.minPollInterval(60);
 
-  // NOTE: independently by this setting the modem will
-  // not allow to send more than one message every 2 minutes,
-  // this is enforced by firmware and can not be changed.
-
   // Setup Sensors
-  // Initialize device.
   #if SENSOR_DHT
-  dht1.begin();
-  dht2.begin();
-  dht3.begin();
-  dht4.begin();
-
-  // Print sensor details
-  sensor_t sensor;
-  Serial.println(F("------------------------------------------------------------------------------"));
-  Serial.println(F("DHTxx Unified Sensors - Temperature and Humidity"));
-  Serial.print(F("  Sensor 1: "));
-  dht1.temperature().getSensor(&sensor);
-  Serial.println(sensor.name);
-    
-  Serial.print(F("  Sensor 2: "));
-  dht2.temperature().getSensor(&sensor);
-  Serial.println(sensor.name);
-    
-  Serial.print(F("  Sensor 3: "));
-  dht3.temperature().getSensor(&sensor);
-  Serial.println(sensor.name);
-    
-  Serial.print(F("  Sensor 4: "));
-  dht4.temperature().getSensor(&sensor);
-  Serial.println(sensor.name);
+  dht_setup();
   #endif  
-
 
   #if SENSOR_CCS811  
   Serial.println(F("------------------------------------------------------------------------------"));
@@ -324,6 +496,10 @@ void setup() {
   watchdog_setup();
   #endif
 
+  #if FEATURE_POWER_MONITOR
+  powermon_setup();
+  #endif
+
   Serial.println(F("------------------------------------------------------------------------------"));
   Serial.println(F("Features"));
   Serial.println(F("  CayenneLPP "));
@@ -337,95 +513,10 @@ void setup() {
 
 //////////////////////////////////////////////////////////////////////////////
 void loop() {
-  // DHT Sensors
-  // Get sensor data
-  float t1,t2,t3,t4;
-  float h1,h2,h3,h4;
-  sensors_event_t event;
 
-  // Sensor1
-  dht1.temperature().getEvent(&event);
-  if (isnan(event.temperature)) {
-    t1 = NOT_A_TEMPERATURE;
-  } else {
-    t1 = event.temperature;
-  }
-
-  t1 = 20.1;
-  
-  dht1.humidity().getEvent(&event);
-  if (isnan(event.relative_humidity)) {
-    h1 = NOT_A_HUMIDITY;
-  } else {
-    h1 = event.relative_humidity;
-  }
-
-  // Sensor 2
-  dht2.temperature().getEvent(&event);
-  if (isnan(event.temperature)) {
-    t2 = NOT_A_TEMPERATURE;
-  } else {
-    t2 = event.temperature;
-  }
-
-  dht2.humidity().getEvent(&event);
-  if (isnan(event.relative_humidity)) {
-    h2 = NOT_A_HUMIDITY;
-  } else {
-    h2 = event.relative_humidity;
-  }
-
-  // Sensor 3
-  dht3.temperature().getEvent(&event);
-  if (isnan(event.temperature)) {
-    t3 = NOT_A_TEMPERATURE;
-  } else {
-    t3 = event.temperature;
-  }
-
-  dht3.humidity().getEvent(&event);
-  if (isnan(event.relative_humidity)) {
-    h3 = NOT_A_HUMIDITY;
-  } else {
-    h3 = event.relative_humidity;
-  }
-
-  // Sensor 4
-  dht4.temperature().getEvent(&event);
-  if (isnan(event.temperature)) {
-    t4 = NOT_A_TEMPERATURE;
-  } else {
-    t4 = event.temperature;
-  }
-
-  dht4.humidity().getEvent(&event);
-  if (isnan(event.relative_humidity)) {
-    h4 = NOT_A_HUMIDITY;
-  } else {
-    h4 = event.relative_humidity;
-  }
-
-  char buff[100];
-  char tbuff1[8];
-  char tbuff2[8];
-  char tbuff3[8];
-  char tbuff4[8];
-  char hbuff1[8];
-  char hbuff2[8];
-  char hbuff3[8];
-  char hbuff4[8];
-  snprintf(buff, sizeof(buff),
-          "| %s %s %s %s | %s %s %s %s |",
-          format_temperature(tbuff1, sizeof(tbuff1), t1),
-          format_temperature(tbuff2, sizeof(tbuff2), t2),
-          format_temperature(tbuff3, sizeof(tbuff3), t3),
-          format_temperature(tbuff4, sizeof(tbuff4), t4),
-          format_humidity(hbuff1, sizeof(hbuff1), h1),
-          format_humidity(hbuff2, sizeof(hbuff2), h2),
-          format_humidity(hbuff3, sizeof(hbuff3), h3),
-          format_humidity(hbuff4, sizeof(hbuff4), h4)
-          );
-  Serial.print(buff);
+  // Reset Packet
+  lpp.reset();
+ 
 
   #if SENSOR_CSS811
   // CCS811 Sensor
@@ -458,41 +549,34 @@ void loop() {
   #endif
    
   // LPP Message
-  lpp.reset();
-  lpp.addTemperature(0, t1);
-  lpp.addRelativeHumidity(1, h1);
+  #if SENSOR_DHT
+  dht_loop();
+  #endif
 
   #if SENSOR_CSS811
   lpp.addConcentration(8, ccs.geteCO2());
   lpp.addConcentration(9, ccs.getTVOC());
   #endif
 
-  // Build LoRaWAN message
-  char msg[100];
-  snprintf(msg, sizeof(msg),
-             "%4.1f %5.1f %4.1f %5.1f %4.1f %5.1f %4.1f %5.1f",
-             t1,h1,
-             t2,h2,
-             t3,h3,
-             t4,h4);
+  #if FEATURE_POWER_MONITOR
+  powermon_loop();
+  #endif
 
-    // String msg = "T: "+buff+"H: T2: H2:";
-    //Serial.print("Sending Message: "); Serial.print(msg);
+  // Begin Transmit
+  digitalWrite(LED_BUILTIN, HIGH);
 
-    digitalWrite(LED_BUILTIN, HIGH);
+  int err;
+  modem.beginPacket();
+  modem.write(lpp.getBuffer(),lpp.getSize());
 
-    int err;
-    modem.beginPacket();
-    modem.write(lpp.getBuffer(),lpp.getSize());
-//    modem.print(msg);
-    err = modem.endPacket(true);
-    if (err > 0) {
-        Serial.print("  [tx]");
-    } else {
-        Serial.print(" [error]");
-    }
+  err = modem.endPacket(true);
+  if (err > 0) {
+    Serial.print("  [tx]");
+  } else {
+    Serial.print(" [error]");
+  }
 
-    delay(1000);
+  delay(1000);
 
     if (modem.available()) {
         Serial.println(" [rx]");
