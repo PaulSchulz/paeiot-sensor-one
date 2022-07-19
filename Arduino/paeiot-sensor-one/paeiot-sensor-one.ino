@@ -9,10 +9,7 @@
   License: GNU Public License v3.0
 */
 
-#define BUILD "v1.3.3rc1  16 Jul 2022                                  "
-
-// TODO Fix capability code so that types of sensors can be
-// easily switched in or out.
+#define BUILD "v1.3.3pre1  16 Jul 2022                                 "
 
 #define TRUE 1
 #define FALSE 0
@@ -22,9 +19,9 @@
 #define LORAWAN        TRUE
 #define SENSOR_STATUS  TRUE
 #define SENSOR_DHT     TRUE
-#define SENSOR_CCS811  FALSE
+#define SENSOR_CCS811  TRUE
 #define SENSOR_BME280  FALSE
-#define SENSOR_CSD30   TRUE
+#define SENSOR_SCD30   TRUE
 
 #define FEATURE_RTC           FALSE
 #define FEATURE_WATCHDOG      TRUE
@@ -58,18 +55,6 @@ void status_loop() {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-// Adafruit_CCS811 Library
-// CCS811 Sensor code based on CCS811_test example
-// Uses I2C Interface
-# include "Adafruit_CCS811.h"
-Adafruit_CCS811 ccs;
-
-// SparkFun BME280 - Version: Latest 
-#include <SparkFunBME280.h>
-#define BME280_ADDR 0x76
-BME280 myBME280;
-
-//////////////////////////////////////////////////////////////////////////////
 // DHT Sensor code is based on sensor-am2302-example
 #include <Adafruit_Sensor.h>
 
@@ -87,7 +72,14 @@ BME280 myBME280;
 #define NOT_A_HUMIDITY    -1.0
 #define DELAY             60000
 // Type of sensor in use:
-#define DHTTYPE    DHT22     // DHT22 (AM2302)
+//   DHT22 (AM2302)
+#define DHTTYPE    DHT22
+
+// CayenneLPP Channels
+int dht_id1 = 0;
+int dht_id2 = 1;
+int dht_id3 = 2;
+int dht_id4 = 3;
 
 // Declare sensors
 DHT_Unified dht1(DHTPIN1, DHTTYPE);
@@ -214,44 +206,180 @@ void dht_loop() {
           );
   Serial.print(buff);
 
-  //lpp.addTemperature(0, t1);
-  //lpp.addRelativeHumidity(0, h1);
-  //lpp.addTemperature(1, t2);
-  //lpp.addRelativeHumidity(1, h2);
-  //lpp.addTemperature(2, t3);
-  //lpp.addRelativeHumidity(2, h3);
-  //lpp.addTemperature(3, t4);
-  //lpp.addRelativeHumidity(3, h4);
+  //lpp.addTemperature(dht_id1, t1);
+  //lpp.addRelativeHumidity(dht_id1, h1);
+  //lpp.addTemperature(dht_id2, t2);
+  //lpp.addRelativeHumidity(dht_id2, h2);
+  //lpp.addTemperature(dht_id3, t3);
+  //lpp.addRelativeHumidity(dht_id3, h3);
+  //lpp.addTemperature(dht_id4, t4);
+  //lpp.addRelativeHumidity(dht_id4, h4);
   // Testing
-  lpp.addTemperature(0, 20.1);
-  lpp.addRelativeHumidity(1, 0.9);
+  lpp.addTemperature(dht_id1, 20.1);
+  lpp.addRelativeHumidity(dht_id1, 0.9);
 
 }
 
 #endif // SENSOR_DHT
 
 ////////////////////////////////////////////////////////////////////////////// 
-// Sensor CSD30 - C02, Temperatue and Humidity
-#if SENSOR_CSD30
-int csd30_ntemp=10;
-float csd30_temp=20.2;
+// Sensor CCS811 - C02 and Volatile Organic Compounds
+// Uses Adafruit_CCS811 Library
+// CCS811 Sensor code based on CCS811_test example
+// Uses I2C Interface
+#if SENSOR_CCS811
 
-void csd30_setup() {
+# include "Adafruit_CCS811.h"
+Adafruit_CCS811 ccs;
+
+int ccs811_id1 = 16;
+int ccs811_id2 = 17;
+int ccs811_present=0;
+
+void ccs811_setup() {
   Serial.println(F("------------------------------------------------------------------------------"));
-  Serial.println(F("CSD30 - CO2, Temperature and Humidity Sensor"));
+  Serial.println(F("CCS811 - C02 and Volatile Organic Compounds"));
+  Serial.print(F("  CayenneLPP Id CO2:  "));
+  Serial.println(ccs811_id1);
+  Serial.print(F("  CayenneLPP Id TVOC: "));
+  Serial.println(ccs811_id2);
+
+  if(ccs.begin()) {
+    Serial.print("  Detected");
+    ccs811_present=1;
+  } else {
+    Serial.println("Failed to detect sensor!");
+  }
+  
+  // Wait for the sensor to be read.
+  if (ccs811_present) {
+    while(!ccs.available());
+    Serial.println(" - Ready");
+  }
+}
+
+void ccs811_loop() {
+  if(ccs811_present) {
+    if(ccs.available()){
+      if(!ccs.readData()){
+        Serial.print("[");
+        Serial.print(ccs.geteCO2());
+        Serial.print(" ");
+        Serial.print(ccs.getTVOC());
+        Serial.print("]");
+      } else {
+        Serial.println("ERROR!");
+      }
+    }
+  } else {
+    // Send Test Data
+    lpp.addPower(ccs811_id1, 432);
+    lpp.addPower(ccs811_id2, 234);
+  }
+}
+
+#endif // SENSOR_CCS811
+
+////////////////////////////////////////////////////////////////////////////// 
+// SparkFun BME280 - Version: Latest 
+#if SENSOR_BME280
+
+#include <SparkFunBME280.h>
+#define BME280_ADDR 0x76
+BME280 myBME280;
+
+int bme280_id = 20;
+int bme280_present = 0;
+
+void bme280_setup() {
+  Serial.println(F("------------------------------------------------------------------------------"));
+  Serial.println("BME280 -Temperature, Pressure and Humidity");
+  //For I2C, enable the following and disable the SPI section
+  myBME280.settings.commInterface = I2C_MODE;
+  myBME280.settings.I2CAddress = 0x76; //BME280_ADDR
+  delay(10);
+  //Initialize BME280
+  myBME280.settings.runMode = 3; //Normal mode
+  myBME280.settings.tStandby = 0;
+  myBME280.settings.filter = 4;
+  myBME280.settings.tempOverSample = 5;
+  myBME280.settings.pressOverSample = 5;
+  myBME280.settings.humidOverSample = 5;
+  delay(10); 
+  myBME280.begin();
+}
+
+void bme280_loop() {
+  //Returns temperature
+    Serial.print("[");
+    Serial.print(myBME280.readTempC(), 2);
+    Serial.print(" C]");
+    //Returns pressure
+    Serial.print("[");
+    Serial.print(myBME280.readFloatPressure()/100.0, 2);
+    Serial.print(" hPa]");
+    Serial.print("[");
+    Serial.print(myBME280.readFloatHumidity(), 0);
+    Serial.print(" %RH]");
+}
+
+#endif // SENSOR_BME280
+
+////////////////////////////////////////////////////////////////////////////// 
+// Sensor SCD30 - C02, Temperatue and Humidity
+#if SENSOR_SCD30
+#include <Adafruit_SCD30.h>
+
+Adafruit_SCD30  scd30;
+
+int scd30_id=10;
+int scd30_present=0;
+
+void scd30_setup() {
+  Serial.println(F("------------------------------------------------------------------------------"));
+  Serial.println(F("SCD30 - CO2, Temperature and Humidity Sensor"));
   Serial.print(F("  CayenneLPP Id: "));
-  Serial.println(csd30_ntemp);
+  Serial.println(scd30_id);
+
+  // Try to initialize!
+  if (scd30.begin()) { 
+    Serial.println("  SCD30 Found!");
+    scd30_present=1;
+  } else {
+    Serial.println("  Failed to find SCD30 chip");
+  }
 }
 
-void csd30_loop() {
-  lpp.addTemperature(csd30_ntemp, csd30_temp);
+void scd30_loop() {
+  if(scd30_present){
+    if (scd30.dataReady()){
+      if (!scd30.read()){
+        Serial.println("Error reading SCD30 sensor data");
+        return;
+      }
+
+      lpp.addTemperature(scd30_id, scd30.temperature);
+      lpp.addRelativeHumidity(scd30_id, scd30.relative_humidity);
+      lpp.addPower(scd30_id, scd30.CO2);
+      // Concetration is not yet supported in NodeRed 
+      //lpp.addConcentration(scd30_id, scd30.CO2);
+    }
+  } else {
+    // Test Data
+    lpp.addTemperature(scd30_id, 20.5);
+    lpp.addRelativeHumidity(scd30_id, 0.5);
+    lpp.addPower(scd30_id, 889);
+    //lpp.addConcentration(scd30_id, 880);
+
+  }
 }
 
-#endif // SENSOR_CSD30
+#endif // SENSOR_SCD30
 
 //////////////////////////////////////////////////////////////////////////////
 // Real Time Clock (RTC)
 #if FEATURE_RTC
+
 void rtc_setup() {
   // set alarm date in the future to test
   rtc.setAlarmMonth(12);
@@ -454,43 +582,17 @@ void setup() {
   dht_setup();
   #endif  
 
-  #if SENSOR_CCS811  
-  Serial.println(F("------------------------------------------------------------------------------"));
-  Serial.print("CCS811 - C02 and Volatile Organic Compounds");
-
-  if(!ccs.begin()){
-    Serial.println(" Failed to start sensor! Please check your wiring.");
-    // while(1);
-  }
-  Serial.print(" - Connected");
-
-  // Wait for the sensor to be ready
-  while(!ccs.available());
-  Serial.println(" - Ready");
-  #endif
-  
+  #if SENSOR_CCS811
+  ccs811_setup();
+  #endif // SENSOR_CCS811
   
   #if SENSOR_BME280
-  Serial.println(F("------------------------------------------------------------------------------"));
-  Serial.println("BME280 -Temperature, Pressure and Humidity");
-  //For I2C, enable the following and disable the SPI section
-  myBME280.settings.commInterface = I2C_MODE;
-  myBME280.settings.I2CAddress = 0x76; //BME280_ADDR
-  delay(10);
-  //Initialize BME280
-  myBME280.settings.runMode = 3; //Normal mode
-  myBME280.settings.tStandby = 0;
-  myBME280.settings.filter = 4;
-  myBME280.settings.tempOverSample = 5;
-  myBME280.settings.pressOverSample = 5;
-  myBME280.settings.humidOverSample = 5;
-  delay(10); 
-  myBME280.begin();
-  #endif
+  bme280_setup();
+  #endif // SENSOR_BME280
 
-  #if SENSOR_CSD30
-  csd30_setup();
-  #endif
+  #if SENSOR_SCD30
+  scd30_setup();
+  #endif // SENSOR_SCD30
 
   #if FEATURE_WATCHDOG
   watchdog_setup();
@@ -517,46 +619,21 @@ void loop() {
   // Reset Packet
   lpp.reset();
  
-
-  #if SENSOR_CSS811
-  // CCS811 Sensor
-  if(ccs.available()){
-    if(!ccs.readData()){
-      Serial.print("[");
-      Serial.print(ccs.geteCO2());
-      Serial.print(" ");
-      Serial.print(ccs.getTVOC());
-      Serial.print("]");
-    } else {
-      Serial.println("ERROR!");
-      while(1);
-   }
-  }
-  #endif
-
-  #if SENSOR_BME280
-  //Returns temperature
-    Serial.print("[");
-    Serial.print(myBME280.readTempC(), 2);
-    Serial.print(" C]");
-    //Returns pressure
-    Serial.print("[");
-    Serial.print(myBME280.readFloatPressure()/100.0, 2);
-    Serial.print(" hPa]");
-    Serial.print("[");
-    Serial.print(myBME280.readFloatHumidity(), 0);
-    Serial.print(" %RH]");
-  #endif
-   
-  // LPP Message
   #if SENSOR_DHT
   dht_loop();
   #endif
 
-  #if SENSOR_CSS811
-  lpp.addConcentration(8, ccs.geteCO2());
-  lpp.addConcentration(9, ccs.getTVOC());
+  #if SENSOR_SCD30
+  scd30_loop();
   #endif
+
+  #if SENSOR_CCS811
+  ccs811_loop();
+  #endif
+
+  #if SENSOR_BME280
+  bme280_loop();
+  #endif // SENSOR_BME280 
 
   #if FEATURE_POWER_MONITOR
   powermon_loop();
@@ -610,3 +687,4 @@ void loop() {
   Serial.println();
 
 }
+k
