@@ -9,7 +9,7 @@
   License: GNU Public License v3.0
 */
 
-#define BUILD "v1.3.3pre1  16 Jul 2022                                 "
+#define BUILD "v1.3.3pre2  21 Jul 2022                                 "
 
 #define TRUE 1
 #define FALSE 0
@@ -19,7 +19,7 @@
 #define LORAWAN        TRUE
 #define SENSOR_STATUS  TRUE
 #define SENSOR_DHT     TRUE
-#define SENSOR_CCS811  TRUE
+#define SENSOR_CCS811  FALSE
 #define SENSOR_BME280  FALSE
 #define SENSOR_SCD30   TRUE
 
@@ -68,18 +68,22 @@ void status_loop() {
 #define DHTPIN3 4 // Digital pin connected to the DHT sensor 3
 #define DHTPIN4 5 // Digital pin connected to the DHT sensor 4
 
+// CayenneLPP Channels
+int dht_id1 = 0;
+int dht_id2 = 1;
+int dht_id3 = 2;
+int dht_id4 = 3;
+
+//#define DHT_NUMBER_SENSORS 4
+//int dht_sensor_pins[DHT_NUMBER_SENSORS] = {2,3,4,5};
+//int dht_sensor_ids[DHT_NUMBER_SENSORS]  = {0,1,2,3};
+
 #define NOT_A_TEMPERATURE -99.9
 #define NOT_A_HUMIDITY    -1.0
 #define DELAY             60000
 // Type of sensor in use:
 //   DHT22 (AM2302)
 #define DHTTYPE    DHT22
-
-// CayenneLPP Channels
-int dht_id1 = 0;
-int dht_id2 = 1;
-int dht_id3 = 2;
-int dht_id4 = 3;
 
 // Declare sensors
 DHT_Unified dht1(DHTPIN1, DHTTYPE);
@@ -130,6 +134,7 @@ void dht_loop() {
     t1 = NOT_A_TEMPERATURE;
   } else {
     t1 = event.temperature;
+    lpp.addTemperature(dht_id1, t1);
   }
 
   dht1.humidity().getEvent(&event);
@@ -137,6 +142,7 @@ void dht_loop() {
     h1 = NOT_A_HUMIDITY;
   } else {
     h1 = event.relative_humidity;
+    lpp.addRelativeHumidity(dht_id1, h1);
   }
 
   // Sensor 2
@@ -145,6 +151,7 @@ void dht_loop() {
     t2 = NOT_A_TEMPERATURE;
   } else {
     t2 = event.temperature;
+    lpp.addTemperature(dht_id2, t2);
   }
 
   dht2.humidity().getEvent(&event);
@@ -152,6 +159,7 @@ void dht_loop() {
     h2 = NOT_A_HUMIDITY;
   } else {
     h2 = event.relative_humidity;
+    lpp.addRelativeHumidity(dht_id2, h2);
   }
 
   // Sensor 3
@@ -160,6 +168,7 @@ void dht_loop() {
     t3 = NOT_A_TEMPERATURE;
   } else {
     t3 = event.temperature;
+    lpp.addTemperature(dht_id3, t3);
   }
 
   dht3.humidity().getEvent(&event);
@@ -167,6 +176,7 @@ void dht_loop() {
     h3 = NOT_A_HUMIDITY;
   } else {
     h3 = event.relative_humidity;
+    lpp.addRelativeHumidity(dht_id3, h3);
   }
 
   // Sensor 4
@@ -175,6 +185,7 @@ void dht_loop() {
     t4 = NOT_A_TEMPERATURE;
   } else {
     t4 = event.temperature;
+    lpp.addTemperature(dht_id4, t4);
   }
 
   dht4.humidity().getEvent(&event);
@@ -182,42 +193,8 @@ void dht_loop() {
     h4 = NOT_A_HUMIDITY;
   } else {
     h4 = event.relative_humidity;
+     lpp.addRelativeHumidity(dht_id4, h4);
   }
-
-  char buff[100];
-  char tbuff1[8];
-  char tbuff2[8];
-  char tbuff3[8];
-  char tbuff4[8];
-  char hbuff1[8];
-  char hbuff2[8];
-  char hbuff3[8];
-  char hbuff4[8];
-  snprintf(buff, sizeof(buff),
-          "| %s %s %s %s | %s %s %s %s |",
-          format_temperature(tbuff1, sizeof(tbuff1), t1),
-          format_temperature(tbuff2, sizeof(tbuff2), t2),
-          format_temperature(tbuff3, sizeof(tbuff3), t3),
-          format_temperature(tbuff4, sizeof(tbuff4), t4),
-          format_humidity(hbuff1, sizeof(hbuff1), h1),
-          format_humidity(hbuff2, sizeof(hbuff2), h2),
-          format_humidity(hbuff3, sizeof(hbuff3), h3),
-          format_humidity(hbuff4, sizeof(hbuff4), h4)
-          );
-  Serial.print(buff);
-
-  //lpp.addTemperature(dht_id1, t1);
-  //lpp.addRelativeHumidity(dht_id1, h1);
-  //lpp.addTemperature(dht_id2, t2);
-  //lpp.addRelativeHumidity(dht_id2, h2);
-  //lpp.addTemperature(dht_id3, t3);
-  //lpp.addRelativeHumidity(dht_id3, h3);
-  //lpp.addTemperature(dht_id4, t4);
-  //lpp.addRelativeHumidity(dht_id4, h4);
-  // Testing
-  lpp.addTemperature(dht_id1, 20.1);
-  lpp.addRelativeHumidity(dht_id1, 0.9);
-
 }
 
 #endif // SENSOR_DHT
@@ -279,7 +256,7 @@ void ccs811_loop() {
 }
 
 #endif // SENSOR_CCS811
-
+                                                  
 ////////////////////////////////////////////////////////////////////////////// 
 // SparkFun BME280 - Version: Latest 
 #if SENSOR_BME280
@@ -351,6 +328,8 @@ void scd30_setup() {
 }
 
 void scd30_loop() {
+  //Serial.println("Reading SCD30 sensor data");
+
   if(scd30_present){
     if (scd30.dataReady()){
       if (!scd30.read()){
@@ -623,10 +602,6 @@ void loop() {
   dht_loop();
   #endif
 
-  #if SENSOR_SCD30
-  scd30_loop();
-  #endif
-
   #if SENSOR_CCS811
   ccs811_loop();
   #endif
@@ -634,6 +609,10 @@ void loop() {
   #if SENSOR_BME280
   bme280_loop();
   #endif // SENSOR_BME280 
+
+  #if SENSOR_SCD30
+  scd30_loop();
+  #endif
 
   #if FEATURE_POWER_MONITOR
   powermon_loop();
@@ -687,4 +666,3 @@ void loop() {
   Serial.println();
 
 }
-k
