@@ -9,7 +9,7 @@
   License: GNU Public License v3.0
 */
 
-#define BUILD "v1.3.4pre1  23 Jul 2022                                 "
+#define BUILD "v1.3.4pre2  23 Jul 2022                                 "
 
 #define TRUE 1
 #define FALSE 0
@@ -18,7 +18,7 @@
 #define FEATURE_SERIAL TRUE
 #define LORAWAN        TRUE
 #define SENSOR_STATUS  TRUE
-#define SENSOR_DHT     TRUE
+#define SENSOR_DHT     FALSE
 #define SENSOR_CCS811  FALSE
 #define SENSOR_BME280  FALSE
 #define SENSOR_SCD30   TRUE
@@ -45,7 +45,12 @@ String appKey = SECRET_APP_KEY;
 CayenneLPP lpp(51);
 
 //////////////////////////////////////////////////////////////////////////////
-// Status Message
+// Status
+// Global Loop Delay
+#define DELAY             60000
+
+uint32_t delayMS = DELAY;
+
 void status_setup() {
 
 }
@@ -91,7 +96,6 @@ DHT_Unified dht2(DHTPIN2, DHTTYPE);
 DHT_Unified dht3(DHTPIN3, DHTTYPE);
 DHT_Unified dht4(DHTPIN4, DHTTYPE);
 
-uint32_t delayMS = DELAY;
 uint32_t minDelayMS;
 
 void dht_setup() {
@@ -461,47 +465,10 @@ void powermon_loop() {
 ////////////////////////////////////////////////////////////////////////////// 
 // Utility Functions
 
-char* format_temperature(char * buff, int buffn, float temperature){
-  float ctemp = NOT_A_TEMPERATURE;
-  if (temperature == ctemp){
-    snprintf(buff,buffn,"****");
-  } else {
-    snprintf(buff,buffn,"%4.1f",temperature);
-  }
-  return buff;
-}
-
-char* format_humidity(char * buff, int buffn, float humidity){
-  float chumidity = NOT_A_HUMIDITY;
-  if (humidity == chumidity){
-    snprintf(buff,buffn,"*****");
-  } else {
-    snprintf(buff,buffn,"%5.1f",humidity);
-  }
-  return buff;
-}
-
-char* data_temperature(char * buff, int buffn, float temperature){
-  float ctemp = NOT_A_TEMPERATURE;
-  if (temperature == ctemp){
-    snprintf(buff,buffn,"****");
-  } else {
-    snprintf(buff,buffn,"%4.1f",temperature);
-  }
-  return buff;
-}
-
-char* data_humidity(char * buff, int buffn, float humidity){
-  float chumidity = NOT_A_HUMIDITY;
-  if (humidity == chumidity){
-    snprintf(buff,buffn,"*****");
-  } else {
-    snprintf(buff,buffn,"%5.1f",humidity);
-  }
-  return buff;
-}
 
 //////////////////////////////////////////////////////////////////////////////
+// Setup
+
 void setup() {
   // Initialize digital pin LED_BUILTIN as an output.
   pinMode(LED_BUILTIN, OUTPUT);
