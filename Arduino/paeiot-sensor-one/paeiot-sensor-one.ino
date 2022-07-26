@@ -9,7 +9,7 @@
   License: GNU Public License v3.0
 */
 
-#define BUILD "v1.3.4pre2  23 Jul 2022                                 "
+#define BUILD "v1.3.4pre3  26 Jul 2022                                 "
 
 #define TRUE 1
 #define FALSE 0
@@ -52,7 +52,7 @@ CayenneLPP lpp(51);
 uint32_t delayMS = DELAY;
 
 void status_setup() {
-
+  
 }
 
 void status_loop() {
@@ -243,11 +243,8 @@ void ccs811_loop() {
   if(ccs811_present) {
     if(ccs.available()){
       if(!ccs.readData()){
-        Serial.print("[");
-        Serial.print(ccs.geteCO2());
-        Serial.print(" ");
-        Serial.print(ccs.getTVOC());
-        Serial.print("]");
+        lpp.addPower(ccs811_id1, ccs.geteCO2());
+        lpp.addPower(ccs811_id2, ccs.getTVOC());        
       } else {
         Serial.println("ERROR!");
       }
@@ -429,23 +426,36 @@ void watchdog_loop() {
 int powermon_panel_pin   = A0;
 int powermon_battery_pin = A1;
 int powermon_enable_pin  = 0;
+int a2d_resolution       = 10;  // 10 bits
+int powermon_max_reading = (1<<a2d_resolution) - 1; 
+// It is possible to change the resolution if needed
 
 void powermon_setup() {
   Serial.println(F("----------------------------------------------------------------------------"));
   Serial.println(F("Power Monitor (for Microclimates Sensor)"));
   Serial.println(F("  Voltage 1: Panel Voltage"));
   Serial.println(F("  Voltage 2: Battery Voltage"));
+  Serial.print(F("  Resolution bits: "));
+  Serial.println(a2d_resolution);
+  Serial.print(F("  Maximum Count: "));
+  Serial.println(powermon_max_reading);
 
   // Enable control for battery voltage reading, and disable.
   pinMode(powermon_enable_pin, OUTPUT);
   digitalWrite(powermon_enable_pin, LOW);
+
+  // Change Resolution
+  analogReadResolution(a2d_resolution); 
 }
 
 void powermon_loop() {
   int panel_reading   = 0;
   int battery_reading = 0;
-  float panel_voltage;   // 0.0-1.0 -> 0-22V
-  float battery_voltage; // 0.0-1.0 -> 0-1V
+  int max_reading = powermon_max_reading;
+  float ref_voltage = 3.3;
+
+  float panel_voltage;   // 0.0 - 22.0 V
+  float battery_voltage; // 0.0 - 7.2 V 
 
   digitalWrite(powermon_enable_pin, HIGH);
   delay(100);
@@ -453,11 +463,15 @@ void powermon_loop() {
   battery_reading = analogRead(powermon_battery_pin);
   digitalWrite(powermon_enable_pin, LOW);
 
-  panel_voltage = 22.0*panel_reading/1024;
-  battery_voltage = 1.0*battery_reading/1024;
+  panel_voltage = 1.0*panel_reading/max_reading*ref_voltage*1047/47;
+  battery_voltage = 1.0*battery_reading/max_reading*ref_voltage*1150/150;
 
   lpp.addVoltage(0, panel_voltage); 
   lpp.addVoltage(1, battery_voltage); 
+  // Debugging
+  lpp.addPower(0, panel_reading); 
+  lpp.addPower(1, battery_reading); 
+
 }
 
 #endif // FEATURE_POWER_MONITOR
