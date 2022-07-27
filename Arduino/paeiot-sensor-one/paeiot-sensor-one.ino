@@ -9,7 +9,7 @@
   License: GNU Public License v3.0
 */
 
-#define BUILD "v1.3.4pre3  26 Jul 2022                                 "
+#define BUILD "v1.3.4pre4  26 Jul 2022                                 "
 
 #define TRUE 1
 #define FALSE 0
@@ -346,9 +346,9 @@ void scd30_loop() {
     }
   } else {
     // Test Data
-    lpp.addTemperature(scd30_id, 20.5);
-    lpp.addRelativeHumidity(scd30_id, 0.5);
-    lpp.addPower(scd30_id, 889);
+    lpp.addTemperature(scd30_id, 0.0);
+    lpp.addRelativeHumidity(scd30_id, 0.0);
+    lpp.addPower(scd30_id, 0);
     //lpp.addConcentration(scd30_id, 880);
 
   }
