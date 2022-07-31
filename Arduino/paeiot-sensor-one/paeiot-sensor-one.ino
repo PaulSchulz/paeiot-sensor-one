@@ -9,7 +9,7 @@
   License: GNU Public License v3.0
 */
 
-#define BUILD "v1.3.4pre4  26 Jul 2022                                 "
+#define BUILD "v1.4.0pre1  31 Jul 2022                                 "
 
 #define TRUE 1
 #define FALSE 0
@@ -289,16 +289,16 @@ void bme280_setup() {
 
 void bme280_loop() {
   //Returns temperature
-    Serial.print("[");
-    Serial.print(myBME280.readTempC(), 2);
-    Serial.print(" C]");
-    //Returns pressure
-    Serial.print("[");
-    Serial.print(myBME280.readFloatPressure()/100.0, 2);
-    Serial.print(" hPa]");
-    Serial.print("[");
-    Serial.print(myBME280.readFloatHumidity(), 0);
-    Serial.print(" %RH]");
+  Serial.print("[");
+  Serial.print(myBME280.readTempC(), 2);
+  Serial.print(" C]");
+  //Returns pressure
+  Serial.print("[");
+  Serial.print(myBME280.readFloatPressure()/100.0, 2);
+  Serial.print(" hPa]");
+  Serial.print("[");
+  Serial.print(myBME280.readFloatHumidity(), 0);
+  Serial.print(" %RH]");
 }
 
 #endif // SENSOR_BME280
@@ -469,9 +469,8 @@ void powermon_loop() {
   lpp.addVoltage(0, panel_voltage); 
   lpp.addVoltage(1, battery_voltage); 
   // Debugging
-  lpp.addPower(0, panel_reading); 
-  lpp.addPower(1, battery_reading); 
-
+  // lpp.addPower(0, panel_reading); 
+  //lpp.addPower(1, battery_reading); 
 }
 
 #endif // FEATURE_POWER_MONITOR
@@ -576,16 +575,16 @@ void setup() {
 //////////////////////////////////////////////////////////////////////////////
 void loop() {
 
-  // Reset Packet
+  // Reset LPP Packet
   lpp.reset();
  
   #if SENSOR_DHT
   dht_loop();
-  #endif
+  #endif // SENSOR_DHT
 
   #if SENSOR_CCS811
   ccs811_loop();
-  #endif
+  #endif // SENSOR_CCS811
 
   #if SENSOR_BME280
   bme280_loop();
@@ -593,11 +592,11 @@ void loop() {
 
   #if SENSOR_SCD30
   scd30_loop();
-  #endif
+  #endif // SENSOR_SCD30
 
   #if FEATURE_POWER_MONITOR
   powermon_loop();
-  #endif
+  #endif //FEATURE_POWER_MONITOR
 
   // Begin Transmit
   digitalWrite(LED_BUILTIN, HIGH);
@@ -615,25 +614,24 @@ void loop() {
 
   delay(1000);
 
-    if (modem.available()) {
-        Serial.println(" [rx]");
+  if (modem.available()) {
+    Serial.println(" [rx]");
 
-        char rcv[64];
-        unsigned int i = 0;
-        while (modem.available()) {
-            rcv[i++] = (char)modem.read();
-        }
-
-        Serial.print(" Received: ");
-        for (unsigned int j = 0; j < i; j++) {
-            Serial.print(rcv[j] >> 4, HEX);
-            Serial.print(rcv[j] & 0xF, HEX);
-            Serial.print(" ");
-        }
-
+    char rcv[64];
+    unsigned int i = 0;
+    while (modem.available()) {
+      rcv[i++] = (char)modem.read();
     }
 
-    digitalWrite(LED_BUILTIN, LOW);
+    Serial.print(" Received: ");
+    for (unsigned int j = 0; j < i; j++) {
+      Serial.print(rcv[j] >> 4, HEX);
+      Serial.print(rcv[j] & 0xF, HEX);
+      Serial.print(" ");
+    }
+  }
+
+  digitalWrite(LED_BUILTIN, LOW);
 
   Serial.print(" [delay]");
 
