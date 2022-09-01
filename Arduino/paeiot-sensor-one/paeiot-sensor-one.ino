@@ -9,7 +9,7 @@
   License: GNU Public License v3.0
 */
 
-#define BUILD "v1.4.0pre1  31 Jul 2022                                 "
+#define BUILD "v1.4.1      01 Sep 2022                                 "
 
 #define TRUE 1
 #define FALSE 0
@@ -46,8 +46,8 @@ CayenneLPP lpp(51);
 
 //////////////////////////////////////////////////////////////////////////////
 // Status
-// Global Loop Delay
-#define DELAY             60000
+// Global Loop Delay (when not using Watchdog.sleep)
+#define DELAY             60000  // 1m
 
 uint32_t delayMS = DELAY;
 
@@ -62,7 +62,6 @@ void status_loop() {
 //////////////////////////////////////////////////////////////////////////////
 // DHT Sensor code is based on sensor-am2302-example
 #include <Adafruit_Sensor.h>
-
 #if SENSOR_DHT
 #include <DHT.h>
 #include <DHT_U.h>
@@ -406,7 +405,7 @@ void watchdog_setup() {
 
 void watchdog_loop() {
   Watchdog.reset();  // Kick watchdog
-
+  Watchdog.sleep();  // Low power sleep
   Serial.print(".");
 
   #if FEATURE_WATCHDOG_TEST
@@ -468,9 +467,6 @@ void powermon_loop() {
 
   lpp.addVoltage(0, panel_voltage); 
   lpp.addVoltage(1, battery_voltage); 
-  // Debugging
-  // lpp.addPower(0, panel_reading); 
-  //lpp.addPower(1, battery_reading); 
 }
 
 #endif // FEATURE_POWER_MONITOR
@@ -564,10 +560,7 @@ void setup() {
   Serial.println(F("------------------------------------------------------------------------------"));
   Serial.println(F("Features"));
   Serial.println(F("  CayenneLPP "));
-  // minDelayMS = sensor.min_delay / 1000;
-  // Serial.print  (F("  Minimum sensor Delay(ms): ")); Serial.println(minDelayMS);
-  Serial.print  (F("  Transmit Delay(m):        ")); Serial.println(delayMS / 60000.0);
-
+  Serial.print  (F("  Transmit Delay:  2m40s (approx.)\n"));
   Serial.println(F("------------------------------------------------------------------------------"));
   
 } // End of setup
@@ -633,15 +626,14 @@ void loop() {
 
   digitalWrite(LED_BUILTIN, LOW);
 
-  Serial.print(" [delay]");
+  Serial.print(" [sleep]\n");
 
   for(int i=0; i<10; i++){
     #if FEATURE_WATCHDOG
-    watchdog_loop();
+    watchdog_loop();   // Kick watchdog and sleep.
+    #else
+    delay(delayMS/10); // Sleep
     #endif
 
-    delay(delayMS/10);
   }
-  Serial.println();
-
 }
