@@ -1,0 +1,91 @@
+[[../README.org][Top]] | [[index.org][Index]]
+-----
+
+Microclimates - From the Coast to the Foothills (Progress Report)
+
+* Introduction
+
+The Microclimates (Citizen Science) Project is flying ahead. Three sensors have
+now been installed; located at the Port Adelaide Enfield Libraries at
+Greenacres, Enfield and Port Adelaide. Two more sites are planned.
+
+One big change with the firmware was required but otherwise, the sensors have
+been deployed as designed.
+
+The location has also been added to the data that is being collected, and the
+graphs have been simplified and modified to allow additional sensors to
+be automatically available.
+
+A map has also been added which automatically shows the location of the
+collected data.
+
+[[https://grafana.iotdemo.dsp.id.au/d/ZxgEXUkVk/sensors-location-map?orgId=1&refresh=1m][Sensor Map]]
+
+* Installation
+
+** Greenacres (greenacres, mc-8)
+
+This was the first site to be deployed and was reasonably straight forward.
+
+It has been found that the sensor needs a LoRaWAN Gateway nearby to initially
+connect to the network correctly. It is suspected that this is due to the
+initial encryption handshake requires the sensor to also get a signal back from
+a gateway. Once this has been done though, the sensor will happily transmit, and
+gateways are able to pick up the signal without additional problems.
+
+This issue also affects the sensor used for coverage mapping when starting up.
+This can be addressed is a change to the firmware, where the LoRaWAN connection
+can be tried again if it fails, after a timeout period.
+
+** Enfield (enfield, mc-5)
+
+The Enfield Libray sensor is located with the "Bee Hotel" and uses power from
+the solar and battery system installed here. This means that the sensor is not reporting
+it's solar and power levels (voltages) as the other sites are doing.
+
+** Port Adelaide (port, mc-7)
+
+Installation at this site required some 'finesse' in order to attach the sensor
+to the outside of the library entrance, but it started recording data on Monday,
+19 September ("port"", with sensor "mc-7").
+
+** Next Sites (semaphore, park)
+
+Work in ongoing to install sensors at Semaphore and The Parks Libraries
+
+* Changes to the Firmware - Lowering Power Usage
+
+Problems were found with excessive power usage on the processor. The delay
+between measurements was beeing imposed by a 'busy sleep loop', which just kept
+the processor running while waiting for the time for the next measurement.
+
+This has ment that the sensor would use up all the battery power overnight, a
+particular problem if the weather was overcast for a couple of days.
+
+The solution was to use the low power sleep mode availble in the 'Sleepy Dog'
+Arduino library. This reduced the power usage by a significant amount, to the
+point where the power problem has essentially been solved. Measurements on
+another sensor are ongoing to measure these results.
+
+* Data Collection and Reporting
+
+Updates have been made to the NodeRed data processing which now adds the
+location (both site name and latitude and longitude)  to the data as it is collected. 
+
+There are a couple of quick benefits from this. Site data can be consistently
+displayed, even if a particular sensor fails and needs to be swapped out. Also,
+the collected data can be displayed on a map with details about the site and
+sensor at that location.
+
+* Results
+
+Grafana Graphs: [[https://grafana.iotdemo.dsp.id.au/d/BVf31-GVk/locations-all?orgId=1&refresh=1m&var-location=enfield&var-location=greenacres&var-location=port][Dashboard]]
+
+The initial data collected has already shown some interesting features, trends
+and differences:
+- The temperature and humidity data for each site generally track each other
+  quite closely, generally within a degree or so, and 2% respectfully.
+- There is still some interesting variability between the sensors, which are
+  begging an explaination.
+- It appears to be possible to detect the movement of a weather front through
+  the Port Adelaide Enfield area by the delay in the temperature graphs.
