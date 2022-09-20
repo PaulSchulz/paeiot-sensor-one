@@ -20,4 +20,5 @@
 - [[20220322-progress-report.org]]
 - [[20220616-progress-report.org]]
 - [[20220717-setup-procedure.org]]
-- [[20220921-setup-procedure.org]]
+- [[20220921-progress-report.org]]
+
