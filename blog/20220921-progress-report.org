@@ -85,7 +85,7 @@ The initial data collected has already shown some interesting features, trends
 and differences:
 - The temperature and humidity data for each site generally track each other
   quite closely, generally within a degree or so, and 2% respectfully.
-- There is still some interesting variability between the sensors, which are
-  begging an explaination.
+- There are still some interesting variability between the sensors, which are
+  begging an explanation.
 - It appears to be possible to detect the movement of a weather front through
   the Port Adelaide Enfield area by the delay in the temperature graphs.
