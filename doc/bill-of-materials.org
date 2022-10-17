@@ -1,5 +1,6 @@
-* Bill of Materials
+#+TITLE: Bill of Materials
 
+* Initial Sensor
 | Item      | Description                    | Supplier | Number | Unit Cost | Total    |
 |-----------+--------------------------------+----------+--------+-----------+----------|
 | Enclosure | Flanged Weatherproof Enclosure | Adafruit |      1 | US$9.95   | US$9.95  |
@@ -14,3 +15,22 @@
 |-----------+--------------------------------+----------+--------+-----------+----------|
 | Sensor    | (Constructed)                  |          |        |           |          |
 | Enclosure |                                |          |        |           |          |
+
+* Deployed Sensor Package
+In order also measure CO2 concentrations with the sensors, the *SDC30* sensor has
+been used, which includes temperature and humidity sensors.
+
+| Item      | Description                    | Supplier     | Num | Unit Cost | Total    |
+|-----------+--------------------------------+--------------+-----+-----------+----------|
+| Enclosure | Flanged Weatherproof Enclosure | Adafruit     |   1 | US$9.95   | US$9.95  |
+|           | with PG-7 Cable Glands         |              |     |           |          |
+|           | PartNo: 3931                   |              |     |           |          |
+|           | SID: 3.10.2                    |              |     |           |          |
+|-----------+--------------------------------+--------------+-----+-----------+----------|
+| Processor | Arduino MKRWAN1310             | Arduino      |   1 | US$30.40  | US$30.40 |
+| + Radio   |                                |              |     |           |          |
+|-----------+--------------------------------+--------------+-----+-----------+----------|
+| Sensor    | Seeed Studio SDC30 - I2C       | Seeed Studio |   1 | US$59.00  | US$59.99 |
+|-----------+--------------------------------+--------------+-----+-----------+----------|
+| Sensor    | (Constructed)                  |              |     |           |          |
+| Enclosure |                                |              |     |           |          |

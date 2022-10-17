@@ -1,0 +1,35 @@
+#+TITLE: Arduino Sketch Structure
+
+* Introduction
+
+The following describes the structure of the Arduino Sketch used in the sensor (paeiot-sensor-one.ino).
+
+Arduino sketches have three main parts:
+- Library declarations (via the #include statement);
+- Setup function (setup()); and
+- Main loop function (loop())
+
+The sensor sketch separates out the various required capabilities from these
+functions, which can be enabled or disabled by defining appropriate variables.
+
+* Capabilities
+The capabilities of the sketch are set with the following parameters defined at
+the beginning of the script.
+
+#+begin_src c
+#define FEATURE_SERIAL TRUE
+#define LORAWAN        TRUE
+#define SENSOR_STATUS  TRUE
+#define SENSOR_DHT     FALSE
+#define SENSOR_CCS811  FALSE
+#define SENSOR_BME280  FALSE
+#define SENSOR_SCD30   TRUE
+
+#define FEATURE_RTC           FALSE
+#define FEATURE_WATCHDOG      TRUE
+#define FEATURE_POWER_MONITOR TRUE
+#+end_src
+
+When starting up, the sketch will output what features and capabilities are enabled.
+
+
